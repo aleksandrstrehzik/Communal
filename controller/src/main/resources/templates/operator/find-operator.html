@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="menu :: head"></header>
+<div class="container mt-5" style="width: 500px">
+    <h3 class="text-center">Название Организации</h3>
+    <form th:method="GET" th:action="@{/operator/info-operator}">
+        <label>Оператор:</label>
+        <select class="custom-select d-block w-100" name="operLabel">
+            <option th:each="o : ${oper}" th:value="${o.label}" th:text="${o.label}" class="form-control" style="width: 150px"></option>
+        </select>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-success">Найти</button>
+    </form>
+</div>
+</body>
+</html>

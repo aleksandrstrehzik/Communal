@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="menu :: head" style="position: relative; z-index: 9999;" ></header>
+<div class="container mt-5">
+    <div class="row mb-2">
+        <div class="col-md-4">
+            <div class="card flex-md-row mb-4 box-shadow h-md-250">
+                <div class="card-body d-flex flex-column align-items-start">
+                    <h3 class="mb-0 text-dark" th:text="${operator.label}"></h3>
+                    <p class="card-text mb-auto">Всякий текст</p>
+                </div>
+                <img th:src="@{/images/minsk.png}" width="100px">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div>
+                <h4 class="text-center">Тарифы на электричество</h4>
+                <table class="table table-bordered table-hover text-center">
+                    <tr class="table-dark text-dark">
+                        <th>Id</th>
+                        <th>Головная организация</th>
+                        <th>Стоимость</th>
+                        <th>Удалить тариф у оператора</th>
+                    </tr>
+                        <tr th:each="el : ${elTar}">
+                            <td th:text="${el.id}"></td>
+                            <td th:text="${el.admin.label}"></td>
+                            <td th:text="${el.tariff}"></td>
+                            <td><a th:href="@{'/operator/deleteTariff?id=' + ${el.id} +'&value=el'}">Удалить</a></td>
+                        </tr>
+                </table>
+                <h4 class="text-center">Тарифы на газ</h4>
+                <table class="table table-bordered table-hover text-center">
+                    <tr class="table-dark text-dark">
+                        <th>Id</th>
+                        <th>Головная организация</th>
+                        <th>Стоимость</th>
+                        <th>Удалить тариф у оператора</th>
+                    </tr>
+                    <tr th:each="gas : ${gasTar}">
+                        <td th:text="${gas.id}"></td>
+                        <td th:text="${gas.admin.label}"></td>
+                        <td th:text="${gas.tariff}"></td>
+                        <td><a th:href="@{'/operator/deleteTariff?id=' + ${gas.id} +'&value=gas'}">Удалить</a></td>
+                    </tr>
+                </table>
+                <h4 class="text-center">Тарифы на теплоту</h4>
+                <table class="table table-bordered table-hover text-center">
+                    <tr class="table-dark text-dark">
+                        <th>Id</th>
+                        <th>Головная организация</th>
+                        <th>Стоимость</th>
+                        <th>Удалить тариф у оператора</th>
+                    </tr>
+                    <tr th:each="heat : ${heatTar}">
+                        <td th:text="${heat.id}"></td>
+                        <td th:text="${heat.admin.label}"></td>
+                        <td th:text="${heat.tariff}"></td>
+                        <td><a th:href="@{'/operator/deleteTariff?id=' + ${heat.id} +'&value=heat'}">Удалить</a></td>
+                    </tr>
+                </table>
+                <a th:href="@{/operator/all-tariff}" class="btn btn-success" style="width: 160px; float: right">Добавить тарифы</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="menu :: head"></header>
+<div class="container mt-5">
+    <h3 class="text-center">Потребители</h3>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=operator&sortDir=' + ${reverseSortDir}}">Оператор</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Имя</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=apartmentSquare&sortDir=' + ${reverseSortDir}}">Площадь</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=numberOfResidents&sortDir=' + ${reverseSortDir}}">Кол. Проживающих</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=electricityTariff&sortDir=' + ${reverseSortDir}}">Эл. тариф</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=gasTariff&sortDir=' + ${reverseSortDir}}">Газ. тариф</a></th>
+            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=heatTariff&sortDir=' + ${reverseSortDir}}">Теп. тариф</a></th>
+            <th>Изменить</th>
+            <th>Удалить</th>
+        </tr>
+        <tr th:each="con : ${consumerDto}">
+            <td th:text="${con.getId()}"></td>
+            <div th:if="${con.getOperator() != null}">
+                <td th:text="${con.getOperator().getLabel()}"></td>
+            </div>
+            <div th:if="${con.getOperator() == null}">
+                <td th:text="none"></td>
+            </div>
+            <td th:text="${con.getName()}"></td>
+            <td th:text="${con.getSurname()}"></td>
+            <td th:text="${con.getApartmentSquare()}"></td>
+            <td th:text="${con.getNumberOfResidents()}"></td>
+            <div th:if="${con.getElectricityTariff() != null}">
+                <td th:text="${con.getElectricityTariff().getTariff()}"></td>
+            </div>
+            <div th:if="${con.getElectricityTariff() == null}">
+                <td th:text="none"></td>
+            </div>
+            <div th:if="${con.getGasTariff() != null}">
+                <td th:text="${con.getGasTariff().getTariff()}"></td>
+            </div>
+            <div th:if="${con.getGasTariff() == null}">
+                <td th:text="none"></td>
+            </div>
+            <div th:if="${con.getHeatTariff() != null}">
+                <td th:text="${con.getHeatTariff().getTariff()}"></td>
+            </div>
+            <div th:if="${con.getHeatTariff() == null}">
+                <td th:text="none"></td>
+            </div>
+            <td><a th:href="@{/consumer/editConsumer/{id}(id=${con.id})}">Изменить</a></td>
+            <td><a th:href="@{/consumer/deleteConsumer/{id}(id=${con.id})}">Удалить</a></td>
+        </tr>
+    </table>
+</div>
+<div style="text-align: center;">
+
+    <a class="page-link" th:if="${currentPage > 1}" th:href="@{'/operator/'+ ${1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая</a>
+    <span th:unless="${currentPage > 1}">Первая</span>
+
+    <a th:if="${currentPage > 1}" th:href="@{'/operator/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Предыдущая</a>
+    <span th:unless="${currentPage > 1}">Предыдущая</span>
+
+    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a th:if="${i != currentPage}" th:href="@{'/operator/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+        <span th:unless="${i != currentPage}">[[${i}]]</span>
+        </span>
+
+    <a th:if="${currentPage < totalPages}" th:href="@{'/operator/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Следующая</a>
+    <span th:unless="${currentPage < totalPages}">Следующая</span>
+
+    <a th:if="${currentPage < totalPages}" th:href="@{'/operator/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя</a>
+    <span th:unless="${currentPage < totalPages}">Последняя</span>
+    <p>
+        Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+    </p>
+</div>
+</body>
+</html>

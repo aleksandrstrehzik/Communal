@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<div th:if="${value == 'el'}">
+<div class="container mt-5" style="width: 500px">
+    <h3 class="text-center">Изменение оператора</h3>
+    <form th:method="POST" th:action="@{/tariffs/editTariff}" th:object="${elTar}">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{admin}">
+        <input type="text" th:field="*{tariff}" th:placeholder="${elTar.tariff}" class="form-control"><br/>
+        <button type="submit" class="btn btn-success">Изменить</button>
+    </form>
+</div>
+</div>
+<div th:if="${value == 'gas'}">
+    <div class="container mt-5" style="width: 500px">
+        <h3 class="text-center">Изменение оператора</h3>
+        <form th:method="POST" th:action="@{/tariffs/editTariff}" th:object="${gasTar}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{admin}">
+            <input type="text" th:field="*{tariff}" th:placeholder="${gasTar.tariff}" class="form-control"><br/>
+            <button type="submit" class="btn btn-success">Изменить</button>
+        </form>
+    </div>
+</div>
+<div th:if="${value == 'heat'}">
+    <div class="container mt-5" style="width: 500px">
+        <h3 class="text-center">Изменение оператора</h3>
+        <form th:method="POST" th:action="@{/tariffs/editTariff}" th:object="${heatTar}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{admin}">
+            <input type="text" th:field="*{tariff}" th:placeholder="${heatTar.tariff}" class="form-control"><br/>
+            <button type="submit" class="btn btn-success">Изменить</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

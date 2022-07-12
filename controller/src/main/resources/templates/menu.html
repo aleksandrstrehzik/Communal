@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="head">
+<nav>
+    <ul>
+        <li><img th:src="@{/images/logo.png}" width="50px"></li>
+        <li><a th:href="@{/}" aria-current="page">Главная</a></li>
+        <li><a>Операторы</a>
+            <ul>
+                <li><a th:href="@{/operator}">Список операторов</a></li>
+                <li><a th:href="@{/operator/add-operator}">Добавить
+                    оператора</a>
+                </li>
+                <li><a th:href="@{/operator/find-operator}">Данные
+                    оператора</a></li>
+            </ul>
+        <li><a>Потребители</a>
+            <ul>
+                <li><a th:href="@{/consumer}">Список потребителей</a>
+                </li>
+                <li><a th:href="@{/consumer/addConsumer}">Добавить
+                    потребителя</a></li>
+                <li><a href="${pageContext.request.contextPath}/operator/selectOperator.jsp">Данные
+                    потребителя</a></li>
+            </ul>
+        <li><a>Тарифы</a>
+            <ul>
+                <li><a th:href="@{/tariffs/elTar}">Тарифы на
+                    электричество</a>
+                </li>
+                <li><a th:href="@{/tariffs/gasTar}">Тарифы на газ</a></li>
+                <li><a th:href="@{/tariffs/heatTar}">Тарифы на
+                    отопление</a>
+                </li>
+            </ul>
+        <li><a>Личный кабинет</a>
+            <ul>
+                <li>
+                    <a href="${pageContext.request.contextPath}/personalArea/enterInPersonalArea.jsp">Войти</a>
+                </li>
+            </ul>
+        <li><a>Связаться с нами</a>
+            <ul>
+                <li><a href="#">Список операторов</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+</div>
+</html>

@@ -1,0 +1,117 @@
+/* задаем цвет фона для контейнера nav. */
+nav {
+    margin:0;
+    background-color: #2a2928;
+}
+
+/* убираем отступы и поля, а также list-style для "ul",
+ * и добавляем "position:relative" */
+nav ul {
+    padding:0;
+    margin:0;
+    list-style: none;
+    position: relative;
+}
+
+/* применяем inline-block позиционирование к элементам навигации */
+nav ul li {
+    margin: 0px 0px 0 0;
+    display:inline-block;
+    background-color: #2a2928;
+    color: #f6f0f0;
+}
+
+/* стилизуем ссылки */
+nav a {
+    text-decoration:none;
+    display:block;
+    padding:0 10px;
+    color: #f6f0f0;
+    font-size:20px;
+    line-height: 60px;
+}
+
+/* изменяем цвет фона при наведении курсора */
+nav a:hover {
+    background-color: #3d8c14;
+}
+/* скрываем выпадающие списки по умолчанию
+			 * и задаем абсолютное позиционирование */
+nav ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+}
+
+/* отображаем выпадающий список при наведении */
+nav ul li:hover > ul {
+    display:inherit;
+}
+
+/* первый уровень выпадающего списка */
+nav ul ul li {
+    min-width:170px;
+    float:none;
+    display:list-item;
+    position: static;
+}
+
+tableA {
+    width: 700px;
+}
+
+*,*:before,*:after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+form {
+    width: 300px;
+
+}
+
+.form__group {
+    margin-bottom: 15px;
+}
+
+.input {
+    width: 100%;
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    outline: 0;
+}
+
+.input.error {
+    border-color: red;
+}
+
+.input::placeholder {
+    color: #ccc;
+}
+
+.btn {
+    height: 30px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e335e;
+    border: 0;
+    width: 100%;
+    outline: 0;
+    cursor: pointer;
+    color: #fff;
+}
+

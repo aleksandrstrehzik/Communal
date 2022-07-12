@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<div class="container mb-5 mt-3">
+    <h4 class="text-center">Тарифы на теплоту</h4>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Головная организация</th>
+            <th>Стоимость</th>
+            <th>Изменить</th>
+            <th>Удалить тариф</th>
+        </tr>
+        <tr th:each="heat : ${heatTar}">
+            <td th:text="${heat.id}"></td>
+            <td th:text="${heat.admin.label}"></td>
+            <td th:text="${heat.tariff}"></td>
+            <td>
+                <a th:href="@{'/tariffs/editTar?id=' + ${heat.id} + '&value=heat'}">Изменить</a>
+            </td>
+            <td><a th:href="@{'/operator/add-tariff?id=' + ${heat.id} +'&value=heat'}">Удалить</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
