@@ -24,11 +24,14 @@
             <td th:text="${gas.admin.label}"></td>
             <td th:text="${gas.tariff}"></td>
             <td>
-                <a th:href="@{'/tariffs/editTar?id=' + ${gas.id} + '&value=gas'}">Изменить</a>
+                <a th:href="@{/tariffs/editGasTar/{id}(id=${gas.id})}">Изменить</a>
             </td>
-            <td><a th:href="@{'/operator/add-tariff?id=' + ${gas.id} +'&value=gas'}">Удалить</a></td>
+            <td>
+                <a th:href="@{/tariffs/deleteGasTar/{id}(id=${gas.id})}">Удалить</a>
+            </td>
         </tr>
     </table>
+    <a th:href="@{/tariffs/addTar/{value}(value=gas)}" class="btn btn-success" style="width: 160px; float: right">Добавить тариф</a>
 </div>
 </body>
 </html>

@@ -52,9 +52,8 @@ public class Operator {
     @OneToMany(mappedBy = "operator", cascade = CascadeType.MERGE)
     private Set<Message> messages = new HashSet<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "operator", cascade = CascadeType.MERGE)
-    private Set<MonthReport> monthReports = new HashSet<>();
+    @OneToOne(mappedBy = "operator", cascade = CascadeType.ALL)
+    private User user;
 
     private String label;
 

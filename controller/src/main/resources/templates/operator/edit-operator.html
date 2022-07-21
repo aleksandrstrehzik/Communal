@@ -10,7 +10,7 @@
 <header th:insert="menu :: head"></header>
 <div class="container mt-5" style="width: 500px">
     <h3 class="text-center">Изменение оператора</h3>
-    <form th:method="POST" th:action="@{/operator/edit-operator}" th:object="${oper}">
+    <form th:method="POST" th:action="@{/admin/edit-operator}" th:object="${oper}">
         <input type="hidden" th:field="*{id}">
         <label>Админ:</label>
         <select class="custom-select d-block w-100" name="admi">

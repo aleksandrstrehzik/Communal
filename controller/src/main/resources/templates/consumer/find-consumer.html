@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<div class="row">
+<div class="container mt-5" style="width: 500px">
+    <h3 class="text-center">Найти пользователя</h3>
+    <form th:method="GET" th:action="@{/consumer/showAllFind}">
+        <label>Имя потребителя :
+            <input type="text" name="consName" class="form-control">
+        </label>
+        <br>
+        <label>Имя потребителя :
+            <input type="text" name="consSurname" class="form-control">
+        </label>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-success">Найти</button>
+    </form>
+</div>
+<div th:if="${consumerDto != null}" class="container mt-5">
+    <h3 class="text-center">Найденые потребители</h3>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Оператор</th>
+            <th>Имя</a></th>
+            <th>Фамилия</a></th>
+            <th>Площадь</a></th>
+            <th>Кол. Проживающих</a></th>
+            <th>Выбрать</th>
+        </tr>
+        <tr th:each="con : ${consumerDto}">
+            <td th:text="${con.getId()}"></td>
+            <div th:if="${con.getOperator() != null}">
+                <td th:text="${con.getOperator().getLabel()}"></td>
+            </div>
+            <div th:if="${con.getOperator() == null}">
+                <td th:text="none"></td>
+            </div>
+            <td th:text="${con.getName()}"></td>
+            <td th:text="${con.getSurname()}"></td>
+            <td th:text="${con.getApartmentSquare()}"></td>
+            <td th:text="${con.getNumberOfResidents()}"></td>
+            <td><a th:href="@{/consumer/getInfo/{id}(id=${con.id})}">Выбрать</a></td>
+        </tr>
+    </table>
+</div>
+</div>
+</body>
+</html>

@@ -11,13 +11,15 @@
 <header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5" style="width: 500px">
     <h3 class="text-center">Изменение оператора</h3>
-    <form th:method="POST" th:action="@{/tariffs/editGasTar}" th:object="${gasTar}">
-        <input type="hidden" th:field="*{id}">
+    <form th:method="POST" th:action="@{/tariffs/addElTar}">
         <label>Админ:</label>
         <select class="custom-select d-block w-100" name="admi">
             <option th:each="a : ${admin}" th:value="${a.id}" th:text="${a.label}" class="form-control" style="width: 150px"></option>
         </select>
-        <input type="text" th:field="*{tariff}" th:placeholder="${gasTar.tariff}" class="form-control"><br/>
+        <br>
+        <br>
+        <input type="hidden" name="value" th:value="${value}">
+        <input type="text" placeholder="Enter tariff"  name="tarr" class="form-control"><br/>
         <button type="submit" class="btn btn-success">Изменить</button>
     </form>
 </div>

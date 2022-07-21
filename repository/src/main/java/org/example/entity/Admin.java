@@ -37,6 +37,9 @@ public class Admin {
 
     private String label;
 
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL)
+    private User user;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

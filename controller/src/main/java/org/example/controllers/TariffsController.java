@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -49,6 +50,18 @@ public class TariffsController {
         return "redirect:/tariffs/elTar";
     }
 
+    @GetMapping("/deleteGasTar/{id}")
+    public String deleteGasTar(@PathVariable("id") Integer id) {
+        tariffsService.deleteGasTar(id);
+        return "redirect:/tariffs/gasTar";
+    }
+
+    @GetMapping("/deleteHeatTar/{id}")
+    public String deleteHeatTar(@PathVariable("id") Integer id) {
+        tariffsService.deleteHeatTar(id);
+        return "redirect:/tariffs/heatTar";
+    }
+
     @GetMapping("/editElTar/{id}")
     public String editElTar(@PathVariable("id") Integer id, Model model) {
         ElectricityTariffDto elTar = tariffsService.getElTar(id);
@@ -65,27 +78,56 @@ public class TariffsController {
         return "redirect:/tariffs/elTar";
 
     }
-    @GetMapping("/editTar")
-    public String editTar(@RequestParam("id") Integer id,
-                            @RequestParam("value") String value,
-                            Model model) {
-        switch (value){
-            case "el":
-                ElectricityTariffDto elTar = tariffsService.getElTar(id);
-                model.addAttribute("elTar", elTar);
-                model.addAttribute("value", value);
-                break;
-            case "gas":
-                GasTariffDto gasTar = tariffsService.getGasTar(id);
-                model.addAttribute("gasTar", gasTar);
-                model.addAttribute("value", value);
-                break;
-            case "heat":
-                HeatTariffDto heatTar = tariffsService.getHeatTar(id);
-                model.addAttribute("heatTar", heatTar);
-                model.addAttribute("value", value);
-                break;
-        }
-        return "tariffs/edit-tariff";
+
+    @GetMapping("/editGasTar/{id}")
+    public String editGasTar(@PathVariable("id") Integer id, Model model) {
+        GasTariffDto gasTar = tariffsService.getGasTar(id);
+        List<AdminDto> allAdmin = operatorService.getAllAdmin();
+        model.addAttribute("admin", allAdmin);
+        model.addAttribute("gasTar", gasTar);
+        return "/tariffs/edit-gasTar";
     }
+
+    @PostMapping("/editGasTar")
+    public String editElTar(@ModelAttribute("gasTar") GasTariffDto gas,
+                            @RequestParam("admi") Integer id) {
+        tariffsService.updateGasTar(gas, id);
+        return "redirect:/tariffs/gasTar";
+
+    }
+
+    @GetMapping("/editHeatTar/{id}")
+    public String editHeatTar(@PathVariable("id") Integer id, Model model) {
+        HeatTariffDto heatTar = tariffsService.getHeatTar(id);
+        List<AdminDto> allAdmin = operatorService.getAllAdmin();
+        model.addAttribute("admin", allAdmin);
+        model.addAttribute("heatTar", heatTar);
+        return "/tariffs/edit-heatTar";
+    }
+
+    @PostMapping("/editHeatTar")
+    public String editHeatTar(@ModelAttribute("heatTar") HeatTariffDto heat,
+                            @RequestParam("admi") Integer id) {
+        tariffsService.updateHeatTar(heat, id);
+        return "redirect:/tariffs/heatTar";
+
+    }
+
+    @GetMapping("/addTar/{value}")
+    public String addTar(Model model,
+                         @PathVariable("value") String value) {
+        List<AdminDto> admin = operatorService.getAllAdmin();
+        model.addAttribute("value", value);
+        model.addAttribute("admin", admin);
+        return "tariffs/create-tariff";
+    }
+
+    @PostMapping("/addElTar")
+    public String addElTar(@RequestParam("admi") Integer adminId,
+                           @RequestParam("value") String value,
+                           @RequestParam("tarr") BigDecimal tariff) {
+        tariffsService.createTariff(adminId, value, tariff);
+        return "redirect:/tariffs/" + value + "Tar";
+    }
+
 }

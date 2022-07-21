@@ -10,7 +10,7 @@
 <header th:insert="menu :: head"></header>
 <div class="container mt-5" style="width: 300px">
     <h3 class="text-center">Добавить Оператора</h3>
-    <form th:method="POST" th:action="@{/operator/add-operator}">
+    <form th:method="POST" th:action="@{/admin/add-operator}">
         <input type="text" name="operLabel" placeholder="Operator label" class="form-control"><br/>
         <input type="text" name="adminLabel" placeholder="Admin label" class="form-control"><br/>
         <button type="submit" class="btn btn-success">Добавить</button>
