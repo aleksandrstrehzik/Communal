@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,8 @@ public class OperatorServiceImpl implements OperatorService {
 
     private final OperatorRepository operatorRepository;
     private final AdminRepository adminRepository;
+    private final ConsumerRepository consumerRepository;
+    private final ConsumerMapper consumerMapper;
     private final AdminMapper adminMapper;
     private final OperatorMapper operatorMapper;
     private final ElectricityTariffMapper electricityTariffMapper;
@@ -158,7 +161,49 @@ public class OperatorServiceImpl implements OperatorService {
 
     public List<AdminDto> getAllAdmin() {
         return adminRepository.findAll().stream()
-                .map(adminMapper::adminToAdminDto)
+                .map(adminMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ElectricityTariffDto> getElTariffsCreateByAdmin(String adminLabel) {
+        return adminRepository.findAdminByLabel(adminLabel).getElectricityTariffs().stream()
+                .map(electricityTariffMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<GasTariffDto> getGasTariffsCreateByAdmin(String adminLabel) {
+        return adminRepository.findAdminByLabel(adminLabel).getGasTariffs().stream()
+                .map(gasTariffMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<HeatTariffDto> getHeatTariffsCreateByAdmin(String adminLabel) {
+        return adminRepository.findAdminByLabel(adminLabel).getHeatTariffs().stream()
+                .map(heatTariffMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public long getConsumersOfOperator(String operLabel) {
+        Integer id = operatorRepository.findOperatorByLabel(operLabel).getId();
+        return consumerRepository.findAllByOperator_Id(id).stream()
+                .map(consumerMapper::toDto)
+                .count();
+    }
+
+    public List<OperatorDto> getAllAdminsOperators(Integer adminId) {
+        return adminRepository.getReferenceById(adminId).getOperators().stream()
+                .map(operatorMapper::toDto)
                 .collect(Collectors.toList());
     }
 }
+
+
+
+
+
+
+
+
+
+
+

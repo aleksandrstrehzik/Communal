@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ConsumerServiceImpl implements ConsumerService {
@@ -41,6 +44,9 @@ public class ConsumerServiceImpl implements ConsumerService {
     }
 
     public void deleteConsumer(Integer id) {
+        Consumer o = consumerRepository.getReferenceById(id);
+        o.getMonthReports()
+                .forEach(report -> report.setConsumer(null));
         consumerRepository.deleteById(id);
     }
 
@@ -70,5 +76,11 @@ public class ConsumerServiceImpl implements ConsumerService {
         consumer.setGasTariff(gas);
         consumer.setHeatTariff(heat);
         consumerRepository.save(consumer);
+    }
+
+    public List<ConsumerDto> getAllFindConsumers(String name, String surname) {
+        return consumerRepository.findAllByNameAndSurname(name, surname).stream()
+                .map(consumerMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

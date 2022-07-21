@@ -8,10 +8,11 @@
         <li><a>Операторы</a>
             <ul>
                 <li><a th:href="@{/operator}">Список операторов</a></li>
-                <li><a th:href="@{/operator/add-operator}">Добавить
+                <li><a th:href="@{/admin/allAdmin-operators}">Список моих операторов</a></li>
+                <li><a th:href="@{/admin/add-operator}">Добавить
                     оператора</a>
                 </li>
-                <li><a th:href="@{/operator/find-operator}">Данные
+                <li><a th:href="@{/admin/find-operator}">Данные
                     оператора</a></li>
             </ul>
         <li><a>Потребители</a>
@@ -20,7 +21,7 @@
                 </li>
                 <li><a th:href="@{/consumer/addConsumer}">Добавить
                     потребителя</a></li>
-                <li><a href="${pageContext.request.contextPath}/operator/selectOperator.jsp">Данные
+                <li><a th:href="@{/consumer/findConsInfo}">Данные
                     потребителя</a></li>
             </ul>
         <li><a>Тарифы</a>
@@ -35,9 +36,8 @@
             </ul>
         <li><a>Личный кабинет</a>
             <ul>
-                <li>
-                    <a href="${pageContext.request.contextPath}/personalArea/enterInPersonalArea.jsp">Войти</a>
-                </li>
+                <li><a th:href="@{/report}">Оплатить</a></li>
+                <li><a th:href="@{/report/allReports}">История платежей</a></li>
             </ul>
         <li><a>Связаться с нами</a>
             <ul>

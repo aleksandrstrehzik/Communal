@@ -3,6 +3,7 @@ package org.example.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -52,8 +53,14 @@ public class Consumer {
     @Column(name = "apartment_square")
     private Double apartmentSquare;
 
+    @Column(name = "sw")
+    private BigDecimal sw;
+
     @Column(name = "number_of_residents")
     private Integer numberOfResidents;
+
+    @OneToOne(mappedBy = "consumer", cascade = CascadeType.ALL)
+    private User user;
 
     @Override
     public boolean equals(Object o) {

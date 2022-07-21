@@ -18,6 +18,7 @@ import org.example.mapper.HeatTariffMapper;
 import org.example.service.TariffsService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,13 +90,44 @@ public class TariffServiceImpl implements TariffsService {
         elRepository.save(electricityTariff);
     }
 
-    public void updateGasTar(GasTariffDto gas) {
+    public void updateGasTar(GasTariffDto gas, Integer adminId) {
+        Admin admin = adminRepository.getReferenceById(adminId);
         GasTariff gasTariff = gasTariffMapper.toEntity(gas);
+        gasTariff.setAdmin(admin);
         gasRepository.save(gasTariff);
     }
 
-    public void updateHeatTar(HeatTariffDto heat) {
+    public void updateHeatTar(HeatTariffDto heat, Integer adminId) {
+        Admin admin = adminRepository.getReferenceById(adminId);
         HeatTariff heatTariff = heatTariffMapper.toEntity(heat);
+        heatTariff.setAdmin(admin);
         heatRepository.save(heatTariff);
+    }
+
+    public void createTariff(Integer adminId, String value, BigDecimal tariff) {
+        Admin admin = adminRepository.getReferenceById(adminId);
+        switch (value){
+            case "el":
+                ElectricityTariff el = ElectricityTariff.builder()
+                        .admin(admin)
+                        .tariff(tariff)
+                        .build();
+                elRepository.save(el);
+                break;
+            case "gas":
+                GasTariff gas = GasTariff.builder()
+                        .admin(admin)
+                        .tariff(tariff)
+                        .build();
+                gasRepository.save(gas);
+                break;
+            case "heat":
+                HeatTariff heat = HeatTariff.builder()
+                        .admin(admin)
+                        .tariff(tariff)
+                        .build();
+                heatRepository.save(heat);
+                break;
+        }
     }
 }

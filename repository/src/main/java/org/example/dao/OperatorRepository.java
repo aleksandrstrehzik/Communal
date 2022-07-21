@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface OperatorRepository extends JpaRepository<Operator, Integer> {
 
     Operator findOperatorByLabel(String label);
+
 }

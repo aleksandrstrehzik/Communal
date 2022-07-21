@@ -18,4 +18,6 @@ public interface ConsumerService {
 
     void editConsumer(ConsumerDto cons, Integer operId, Integer elId,
                       Integer gasId, Integer heatId);
+
+    List<ConsumerDto> getAllFindConsumers(String name, String surname);
 }

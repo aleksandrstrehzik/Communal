@@ -13,23 +13,18 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
+@ToString
 public class MonthReport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "eltariff_id")
-    private ElectricityTariff electricityTariff;
+    private BigDecimal electricityTariff;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "heattariff_id")
-    private HeatTariff heatTariff;
+    private BigDecimal heatTariff;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gastariff_id")
-    private GasTariff gasTariff;
+    private BigDecimal gasTariff;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "month")
@@ -39,9 +34,7 @@ public class MonthReport {
     @JoinColumn(name = "consumer_id")
     private Consumer consumer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "operator_id")
-    private Operator operator;
+    private String operator;
 
     @Column
     private Integer year;
@@ -66,6 +59,14 @@ public class MonthReport {
 
     @Column(name = "pyament_for_electricity_energy")
     private BigDecimal paymentElEnergy;
+
+    private BigDecimal totalPayment;
+
+    private BigDecimal totalElConsumed;
+
+    private BigDecimal totalGasConsumed;
+
+    private BigDecimal totalHeatConsumed;
 
     @Override
     public boolean equals(Object o) {

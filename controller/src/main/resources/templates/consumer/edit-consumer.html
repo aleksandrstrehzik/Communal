@@ -7,54 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head"></header>
-<!--<div class="container mt-5" style="width: 500px">
-    <h3 class="text-center">Изменение потребителя</h3>
-    <form th:method="POST" th:action="@{/consumer/editConsumer}" th:object="${consumer}">
-       <label> Оператор:
-            <br>
-            <input type="text" th:text="${consumer.operator.label}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label> Имя:
-            <br>
-            <input type="text" th:field="*{name}" th:placeholder="${consumer.getName()}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label> Фамилия:
-            <br>
-            <input type="text" th:field="*{surname}" th:placeholder="${consumer.getSurname()}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label> Жилая площадь:
-            <br>
-            <input type="text" th:field="*{apartmentSquare}" th:placeholder="${consumer.getApartmentSquare()}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label> Количество проживающих:
-            <br>
-            <input type="text" th:field="*{numberOfResidents}" th:placeholder="${consumer.getNumberOfResidents()}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label> Тариф на электричество:
-            <br>
-            <input type="text" th:field="*{electricityTariff}" th:placeholder="${consumer.electricityTariff.tariff}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label> Тариф на газ:
-            <br>
-            <input type="text" th:field="*{gasTariff}" th:placeholder="${consumer.gasTariff.tariff}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <label>  Тариф на теплоту:
-            <br>
-            <input type="text" th:field="*{heatTariff}" th:placeholder="${consumer.heatTariff.tariff}" class="form-control" style="width: 500px">
-            <br>
-        </label>
-        <input type="hidden" th:field="*{id}">
-        <button type="submit" class="btn btn-success">Изменить</button>
-    </form>
-</div>-->
+<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-3" >
     <h3 class="text-center">Изменение потребителя</h3>
     <br>
@@ -86,7 +39,6 @@
             <div class="col-md-3 mb-3">
                 <label>Оператор:</label>
                 <select class="custom-select d-block w-100" name="operId">
-                    <option value="">Choose...</option>
                     <option th:each="oper : ${operDto}" th:value="${oper.id}" th:text="${oper.label}" class="form-control" style="width: 150px"></option>
                 </select>
             </div>

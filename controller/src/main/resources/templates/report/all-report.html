@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<body class="bg-light">
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>Список платежей</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Какие поля хотите видеть</span>
+            </h4>
+            <form th:action="@{/report/allReport}" th:method="GET">
+                <div class="form-check" th:if="${id != null}">
+                    <input type="checkbox" class="form-check-input" name="id" value="true" checked>
+                    <label class="form-check-label">Индефикатор</label>
+                </div>
+                <div class="form-check" th:if="${id == null}">
+                    <input type="checkbox" class="form-check-input" name="id" value="true">
+                    <label class="form-check-label">Индефикатор</label>
+                </div>
+                <div class="form-check" th:if="${elCost != null}">
+                    <input type="checkbox" class="form-check-input" name="elCost" value="true" checked>
+                    <label class="form-check-label">Стоимость кВт/ч</label>
+                </div>
+                <div class="form-check" th:if="${elCost == null}">
+                    <input type="checkbox" class="form-check-input" name="elCost" value="true">
+                    <label class="form-check-label">Стоимость кВт/ч</label>
+                </div>
+                <div class="form-check" th:if="${gasCost != null}">
+                    <input type="checkbox" class="form-check-input" name="gasCost" value="true" checked>
+                    <label class="form-check-label">Стоимость м3 газа</label>
+                </div>
+                <div class="form-check" th:if="${gasCost == null}">
+                    <input type="checkbox" class="form-check-input" name="gasCost" value="true">
+                    <label class="form-check-label">Стоимость м3 газа</label>
+                </div>
+                <div class="form-check" th:if="${heatCost != null}">
+                    <input type="checkbox" class="form-check-input" name="heatCost" value="true" checked>
+                    <label class="form-check-label">Стоимость теплоты</label>
+                </div>
+                <div class="form-check" th:if="${heatCost == null}">
+                    <input type="checkbox" class="form-check-input" name="heatCost" value="true">
+                    <label class="form-check-label">Стоимость теплоты</label>
+                </div>
+                <div class="form-check" th:if="${elPay != null}">
+                    <input type="checkbox" class="form-check-input" name="elPay" value="true" checked>
+                    <label class="form-check-label">Плата за элекстричество</label>
+                </div>
+                <div class="form-check" th:if="${elPay == null}">
+                    <input type="checkbox" class="form-check-input" name="elPay" value="true">
+                    <label class="form-check-label">Плата за элекстричество</label>
+                </div>
+                <div class="form-check" th:if="${gasPay != null}">
+                    <input type="checkbox" class="form-check-input" name="gasPay" value="true" checked>
+                    <label class="form-check-label">Плата за газ</label>
+                </div>
+                <div class="form-check" th:if="${gasPay == null}">
+                    <input type="checkbox" class="form-check-input" name="gasPay" value="true">
+                    <label class="form-check-label">Плата за газ</label>
+                </div>
+                <div class="form-check" th:if="${heatPay != null}">
+                    <input type="checkbox" class="form-check-input" name="heatPay" value="true" checked>
+                    <label class="form-check-label">Плата за теплоту</label>
+                </div>
+                <div class="form-check" th:if="${heatPay == null}">
+                    <input type="checkbox" class="form-check-input" name="heatPay" value="true">
+                    <label class="form-check-label">Плата за теплоту</label>
+                </div>
+                <div class="form-check" th:if="${totalPayment != null}">
+                    <input type="checkbox" class="form-check-input" name="totalPayment" value="true" checked>
+                    <label class="form-check-label">Общая цена</label>
+                </div>
+                <div class="form-check" th:if="${totalPayment == null}">
+                    <input type="checkbox" class="form-check-input" name="totalPayment" value="true">
+                    <label class="form-check-label">Общая цена</label>
+                </div>
+                <div class="form-check" th:if="${elValue != null}">
+                    <input type="checkbox" class="form-check-input" name="elValue" value="true" checked>
+                    <label class="form-check-label">Кол-во эл</label>
+                </div>
+                <div class="form-check" th:if="${elValue == null}">
+                    <input type="checkbox" class="form-check-input" name="elValue" value="true">
+                    <label class="form-check-label">Кол-во эл</label>
+                </div>
+                <div class="form-check" th:if="${gasValue != null}">
+                    <input type="checkbox" class="form-check-input" name="gasValue" value="true" checked>
+                    <label class="form-check-label">Кол-во газа</label>
+                </div>
+                <div class="form-check" th:if="${gasValue == null}">
+                    <input type="checkbox" class="form-check-input" name="gasValue" value="true">
+                    <label class="form-check-label">Кол-во газа</label>
+                </div>
+                <div class="form-check" th:if="${heatValue != null}">
+                    <input type="checkbox" class="form-check-input" name="heatValue" value="true" checked>
+                    <label class="form-check-label">Кол-во теплоты</label>
+                </div>
+                <div class="form-check" th:if="${heatValue == null}">
+                    <input type="checkbox" class="form-check-input" name="heatValue" value="true">
+                    <label class="form-check-label">Кол-во теплоты</label>
+                </div>
+                <div class="form-check" th:if="${elCount != null}">
+                    <input type="checkbox" class="form-check-input" name="elCount" value="true" checked>
+                    <label class="form-check-label">Счетик эл</label>
+                </div>
+                <div class="form-check" th:if="${elCount == null}">
+                    <input type="checkbox" class="form-check-input" name="elCount" value="true">
+                    <label class="form-check-label">Счетик эл</label>
+                </div>
+                <div class="form-check" th:if="${gasCount != null}">
+                    <input type="checkbox" class="form-check-input" name="gasCount" value="true" checked>
+                    <label class="form-check-label">Счетчик газа</label>
+                </div>
+                <div class="form-check" th:if="${gasCount == null}">
+                    <input type="checkbox" class="form-check-input" name="gasCount" value="true">
+                    <label class="form-check-label">Счетчик газа</label>
+                </div>
+                <div class="form-check" th:if="${heatCount != null}">
+                    <input type="checkbox" class="form-check-input" name="heatCount" value="true" checked>
+                    <label class="form-check-label">Счетчик теплоты</label>
+                </div>
+                <div class="form-check" th:if="${heatCount == null}">
+                    <input type="checkbox" class="form-check-input" name="heatCount" value="true">
+                    <label class="form-check-label">Счетчик теплоты</label>
+                </div>
+                <div class="form-check" th:if="${IsPaid != null}">
+                    <input type="checkbox" class="form-check-input" name="IsPaid" value="true" checked>
+                    <label class="form-check-label">Статус</label>
+                </div>
+                <div class="form-check" th:if="${IsPaid == null}">
+                    <input type="checkbox" class="form-check-input" name="IsPaid" value="true">
+                    <label class="form-check-label">Статус</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="operLabel" value="true">
+                    <label class="form-check-label">Оператора</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="year" value="true">
+                    <label class="form-check-label">Год</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="month" value="true">
+                    <label class="form-check-label">Месяц</label>
+                </div>
+                <hr class="my-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">За какой период</span>
+                </h4>
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label>Месяц</label>
+                        <select class="custom-select d-block w-100" name="mon">
+                            <option value="">Не выбрано</option>
+                            <option th:each="m : ${months}" th:value="${m}" th:text="${m.rus}" class="form-control"
+                                    style="width: 150px"></option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label>Год</label>
+                        <select class="custom-select d-block w-100" name="year1">
+                            <option value="1">Не выбрано</option>
+                            <option value="2018" class="form-control" style="width: 150px">2018</option>
+                            <option value="2019" class="form-control" style="width: 150px">2019</option>
+                            <option value="2020" class="form-control" style="width: 150px">2020</option>
+                            <option value="2021" class="form-control" style="width: 150px">2021</option>
+                            <option value="2022" class="form-control" style="width: 150px">2022</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <input type="hidden" name="consId" th:value="${consId}">
+                <button type="submit" class="btn btn-secondary">Показать</button>
+            </form>
+        </div>
+
+
+        <div class="col-md-8 order-md-1">
+            <h3 class="text-center">Отчет</h3>
+            <table class="table table-bordered table-hover text-center">
+                <tr class="table-dark text-dark">
+                    <th th:if="${id != null}">Id</th>
+                    <th th:if="${elCost != null}">Ст. Эл</th>
+                    <th th:if="${gasCost != null}">Ст. газ</th>
+                    <th th:if="${heatCost != null}">Ст. тепл</th>
+                    <th th:if="${elPay != null}">Пл. эл</th>
+                    <th th:if="${gasPay != null}">Пл. газ</th>
+                    <th th:if="${heatPay != null}">Пл. тепл</th>
+                    <th th:if="${elValue != null}">Кол. эл</th>
+                    <th th:if="${gasValue != null}">Кол. газ</th>
+                    <th th:if="${heatValue != null}">Кол. тепл</th>
+                    <th th:if="${totalPayment != null}">Кол. тепл</th>
+                    <th th:if="${elCount != null}">Счт. эл</th>
+                    <th th:if="${gasCount != null}">Счт. газ</th>
+                    <th th:if="${heatCount != null}">Счт. тепл</th>
+                    <th th:if="${IsPaid != null}">Статус</th>
+                    <th th:if="${operLabel != null}">Оператор</th>
+                    <th th:if="${year != null}">Год</th>
+                    <th th:if="${month != null}">Месяц</th>
+                    <!--<th>Изменить</th>
+                    <th>Удалить</th>-->
+                </tr>
+                <tr th:each="rep : ${repList}">
+                    <td th:if="${id != null}" th:text="${rep.id}"></td>
+                    <td th:if="${elCost != null}" th:text="${rep.electricityTariff}"></td>
+                    <td th:if="${gasCost != null}" th:text="${rep.gasTariff}"></td>
+                    <td th:if="${heatCost != null}" th:text="${rep.heatTariff}"></td>
+                    <td th:if="${elPay != null}" th:text="${rep.paymentElEnergy}"></td>
+                    <td th:if="${gasPay != null}" th:text="${rep.paymentForGas}"></td>
+                    <td th:if="${heatPay != null}" th:text="${rep.paymentHeatEnergy}"></td>
+                    <td th:if="${totalPayment != null}" th:text="${rep.totalPayment}"></td>
+                    <td th:if="${elValue != null}" th:text="${rep.amountOfElectricityEnergyConsumed}"></td>
+                    <td th:if="${gasValue != null}" th:text="${rep.volumeOfConsumedGas}"></td>
+                    <td th:if="${heatValue != null}" th:text="${rep.amountOfHeatEnergyConsumed}"></td>
+                    <td th:if="${elCount != null}" th:text="${rep.totalElConsumed}"></td>
+                    <td th:if="${gasCount != null}" th:text="${rep.totalGasConsumed}"></td>
+                    <td th:if="${heatCount != null}" th:text="${rep.totalHeatConsumed}"></td>
+                    <td th:if="${IsPaid != null}" th:text="${rep.IsPaid}"></td>
+                    <td th:if="${operLabel != null}" th:text="${rep.operator}"></td>
+                    <td th:if="${year != null}" th:text="${rep.year}"></td>
+                    <td th:if="${month != null}" th:text="${rep.month}"></td>
+                    <!-- <td><a th:href="@{/operator/edit-operator/{id}(id=${oper.id})}">Изменить</a></td>
+                     <td><a th:href="@{/operator/delete/{id}(id=${oper.id})}">Удалить</a></td>-->
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</body>
+</html>
