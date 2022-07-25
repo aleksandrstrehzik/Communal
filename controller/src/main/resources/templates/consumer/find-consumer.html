@@ -7,11 +7,11 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="row">
 <div class="container mt-5" style="width: 500px">
     <h3 class="text-center">Найти пользователя</h3>
-    <form th:method="GET" th:action="@{/consumer/showAllFind}">
+    <form th:method="GET" th:action="@{/operator/showAllFind}">
         <label>Имя потребителя :
             <input type="text" name="consName" class="form-control">
         </label>
@@ -48,7 +48,7 @@
             <td th:text="${con.getSurname()}"></td>
             <td th:text="${con.getApartmentSquare()}"></td>
             <td th:text="${con.getNumberOfResidents()}"></td>
-            <td><a th:href="@{/consumer/getInfo/{id}(id=${con.id})}">Выбрать</a></td>
+            <td><a th:href="@{/operator/getInfo/{id}(id=${con.id})}">Выбрать</a></td>
         </tr>
     </table>
 </div>

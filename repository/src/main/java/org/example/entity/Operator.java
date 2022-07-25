@@ -45,7 +45,7 @@ public class Operator {
     private Admin admin;
 
     @Builder.Default
-    @OneToMany(mappedBy = "operator", cascade = {CascadeType.REFRESH})
+    @OneToMany(mappedBy = "operator", cascade = CascadeType.MERGE)
     private Set<Consumer> consumers = new HashSet<>();
 
     @Builder.Default

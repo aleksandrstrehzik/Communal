@@ -7,18 +7,13 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head"></header>
+<header th:insert="home-page :: header"></header>
 <div class="container mt-5" style="width: 500px">
     <h3 class="text-center">Изменение оператора</h3>
     <form th:method="POST" th:action="@{/admin/edit-operator}" th:object="${oper}">
         <input type="hidden" th:field="*{id}">
-        <label>Админ:</label>
-        <select class="custom-select d-block w-100" name="admi">
-            <option th:each="a : ${admin}" th:value="${a.id}" th:text="${a.label}" class="form-control" style="width: 150px"></option>
-        </select>
-        <br>
-        <br>
         <input type="text" th:field="*{label}" th:placeholder="${oper.label}" class="form-control"><br/>
+        <div th:if="${#fields.hasErrors('label')}" th:errors="*{label}" style="color: red">Ошибка</div>
         <button type="submit" class="btn btn-success">Изменить</button>
     </form>
 </div>

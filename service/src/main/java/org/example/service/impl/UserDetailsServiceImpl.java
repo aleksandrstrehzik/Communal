@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import static org.example.service.impl.MockUtils.COULD_NOT_FIND_USER;
+import static org.example.service.impl.MockUtils.STRING;
+
 @RequiredArgsConstructor
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -21,13 +24,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            throw new UsernameNotFoundException("Could not find user " + username + "!");
+            throw new UsernameNotFoundException(COULD_NOT_FIND_USER + username + STRING);
         }
 
         return new UserDetailsImpl(user);
     }
 
-    public UserDto getUserByName(String userName) {
-        return userMapper.toDto(userRepository.findByUserName(userName));
-    }
 }

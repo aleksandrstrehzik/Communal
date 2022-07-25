@@ -8,30 +8,45 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
-<div class="container mb-5 mt-3">
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
+<div th:if="${flag == null}" class="container mb-5 mt-3">
 <h4 class="text-center">Тарифы на электричество</h4>
 <table class="table table-bordered table-hover text-center">
     <tr class="table-dark text-dark">
         <th>Id</th>
         <th>Головная организация</th>
         <th>Стоимость</th>
-        <th>Изменить</th>
-        <th>Удалить тариф</th>
     </tr>
     <tr th:each="el : ${elTar}">
         <td th:text="${el.id}"></td>
         <td th:text="${el.admin.label}"></td>
         <td th:text="${el.tariff}"></td>
-        <td>
-            <a th:href="@{/tariffs/editElTar/{id}(id=${el.id})}">Изменить</a>
-        </td>
-        <td>
-            <a th:href="@{/tariffs/deleteElTar/{id}(id=${el.id})}">Удалить</a>
-        </td>
     </tr>
 </table>
-    <a th:href="@{/tariffs/addTar/{value}(value=el)}" class="btn btn-success" style="width: 160px; float: right">Добавить тариф</a>
+</div>
+<div th:if="${flag == true}" class="container mb-5 mt-3">
+    <h4 class="text-center">Тарифы на электричество</h4>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Головная организация</th>
+            <th>Стоимость</th>
+            <th>Изменить</th>
+            <th>Удалить тариф</th>
+        </tr>
+        <tr th:each="el : ${elTar}">
+            <td th:text="${el.id}"></td>
+            <td th:text="${el.admin.label}"></td>
+            <td th:text="${el.tariff}"></td>
+            <td>
+                <a th:href="@{/admin/editElTar/{id}(id=${el.id})}">Изменить</a>
+            </td>
+            <td>
+                <a th:href="@{/admin/deleteElTar/{id}(id=${el.id})}">Удалить</a>
+            </td>
+        </tr>
+    </table>
+    <a th:href="@{/admin/addTar/{value}(value=el)}" class="btn btn-success" style="width: 160px; float: right">Добавить тариф</a>
 </div>
 </body>
 </html>

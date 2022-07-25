@@ -7,12 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <body class="bg-light">
 <div class="container">
     <div class="py-5 text-center">
-        <img class="d-block mx-auto mb-4" src="/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72"
-             height="72">
         <h2>Оплата услуг</h2>
     </div>
 
@@ -51,30 +49,25 @@
                     </div>
                     <span class="text-muted" th:text="${cons.heatTariff.tariff}"></span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>Total (USD)</span>
-                    <strong>$20</strong>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Задолжность перед организацией</h6>
+                        <small class="text-muted">текущая</small>
+                    </div>
+                    <span class="text-muted" th:text="${cons.sw}"></span>
                 </li>
             </ul>
-
-            <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-secondary">Redeem</button>
-                    </div>
-                </div>
-            </form>
         </div>
 
 
         <div class="col-md-8 order-md-1">
             <h4 class="mb-3" th:text="${cons.name}"></h4>
             <h4 class="mb-3" th:text="${cons.surname}"></h4>
-            <form class="needs-validation" novalidate th:action="@{/report/createReport}" th:method="POST">
+            <form class="needs-validation" novalidate th:action="@{/consumer/createReport}" th:method="POST">
                 <input type="hidden" th:value="${cons.id}" name="id">
                 <div class="mb-3">
-                    <label>Введите показание счетчика по электричеству</label>
+                    <h6>Введите показание счетчика по электричеству</h6>
+                    <small th:if="${rep != null}" class="text-muted" th:text="'показатель последнего платежа:  ' + ${rep.totalElConsumed}"></small>
                     <input type="text" name="elValue" placeholder="Electricity value" class="form-control"
                            required>
                     <div class="invalid-feedback">
@@ -83,7 +76,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label>Введите показание счетчика по газу</label>
+                    <h6>Введите показание счетчика по газу</h6>
+                    <small th:if="${rep != null}" class="text-muted" th:text="'показатель последнего платежа:  ' + ${rep.totalGasConsumed}"></small>
                     <input type="text" name="gasValue" placeholder="Gas value" class="form-control" required>
                     <div class="invalid-feedback">
                         Valid first name is required.
@@ -91,7 +85,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label>Введите показание счетчика по горячей воде</label>
+                    <h6>Введите показание счетчика по горячей воде</h6>
+                    <small th:if="${rep != null}" class="text-muted" th:text="'показатель последнего платежа:  ' + ${rep.totalHeatConsumed}"></small>
                     <input type="text" name="heatValue" placeholder="Heat value" class="form-control" required>
                     <div class="invalid-feedback">
                         Valid first name is required.
@@ -123,7 +118,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Оплатить</button>
             </form>
             <br>
             <br>

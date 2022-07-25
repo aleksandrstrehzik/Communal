@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface MonthReportRepository extends JpaRepository<MonthReport, Integer> {
 
-    @Query("select m from MonthReport m where m.id = (select max(mr.id) from MonthReport mr where mr.consumer.id =:consId)")
+    @Query("select m from MonthReport m where m.id = " +
+            "(select max(mr.id) from MonthReport mr where mr.consumer.id =:consId)")
     MonthReport findPreviousReport(Integer consId);
 
     List<MonthReport> findAllByConsumer_Id(Integer id);

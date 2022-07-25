@@ -7,54 +7,52 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-3" >
     <h3 class="text-center">Добавить потребителя</h3>
     <br>
     <br>
-    <form th:method="POST" th:action="@{/consumer/createConsumer}" th:object="${consumer}" style="width: 100%">
+    <form th:method="POST" th:action="@{/operator/createConsumer}" th:object="${consumer}" style="width: 100%">
         <div class="row">
             <div class="col-md-3 mb-3">
                 <label> Имя:
-                    <input type="text" th:field="*{name}" placeholder="Enter name" class="form-control">
+                    <input type="text" th:field="*{name}" placeholder="Enter name" class="form-control" id="label">
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red">Ошибка</div>
                 </label>
             </div>
             <div class="col-md-3 mb-3">
                 <label> Фамилия:
                     <input type="text" th:field="*{surname}" placeholder="Enter surname" class="form-control">
+                    <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" style="color: red">Ошибка</div>
                 </label>
             </div>
             <div class="col-md-3 mb-3">
                 <label> Жилая площадь:
                     <input type="text" th:field="*{apartmentSquare}" placeholder="Apartment square" class="form-control">
+                    <div th:if="${#fields.hasErrors('apartmentSquare')}" th:errors="*{apartmentSquare}" style="color: red">Ошибка</div>
                 </label>
             </div>
             <div class="col-md-3 mb-3">
                 <label> Количество проживающих:
                     <input type="text" th:field="*{numberOfResidents}" placeholder="Number of residents" class="form-control">
+                    <div th:if="${#fields.hasErrors('numberOfResidents')}" th:errors="*{numberOfResidents}" style="color: red">Ошибка</div>
                 </label>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3 mb-3">
-                <label>Оператор:</label>
-                <select class="custom-select d-block w-100" name="operId">
-                    <option th:each="oper : ${operDto}" th:value="${oper.id}" th:text="${oper.label}" class="form-control" style="width: 150px"></option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-4">
                 <label>Тариф на электричество:</label>
                 <select class="custom-select d-block w-100" name="elTar">
                     <option th:each="etar : ${elTar}" th:value="${etar.id}" th:text="${etar.tariff}" class="form-control" style="width: 150px"></option>
                 </select>
             </div>
-            <div class="col-md-3 mb-3" >
+            <div class="col-md-4 mb-4" >
                 <label>Тариф на газ:</label>
                 <select class="custom-select d-block w-100" name="gasTar">
                     <option th:each="gtar : ${gasTar}" th:value="${gtar.id}" th:text="${gtar.tariff}" class="form-control" style="width: 150px"></option>
                 </select>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-4">
                 <label>Тариф на теплоту:</label>
                 <select class="custom-select d-block w-100" name="heatTar">
                     <option th:each="htar : ${heatTar}" th:value="${htar.id}" th:text="${htar.tariff}" class="form-control" style="width: 150px"></option>

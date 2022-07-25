@@ -2,119 +2,248 @@ package org.example.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.*;
+import org.example.service.AdminService;
 import org.example.service.OperatorService;
+import org.example.service.TariffsService;
+import org.example.service.UserService;
 import org.example.service.impl.UserDetailsServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
+import static org.example.controllers.MockUtils.*;
+
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(ADMIN_)
 @RequiredArgsConstructor
 public class AdminController {
 
     private final OperatorService operatorService;
-    private final UserDetailsServiceImpl userService;
+    private final UserService userService;
+    private final TariffsService tariffsService;
+    private final AdminService adminService;
+    private final HttpSession session;
 
 
-    @GetMapping("/add-operator")
-    public String addOperator(Principal principal) {
-        Integer id = userService.getUserByName(principal.getName()).getAdmin().getId();
-        System.out.println(id);
-        return "/operator/add-operator";
+    @GetMapping(ADD_OPERATOR)
+    public String addOperator(@ModelAttribute(OPER) OperatorDto oper, Principal principal, Model model) {
+        String label = userService.getUserByName(principal.getName()).getAdmin().getLabel();
+        List<ElectricityTariffDto> elTar = operatorService.getElTariffsCreateByAdmin(label);
+        List<GasTariffDto> gasTar = operatorService.getGasTariffsCreateByAdmin(label);
+        List<HeatTariffDto> heatTar = operatorService.getHeatTariffsCreateByAdmin(label);
+        model.addAttribute(ADMIN_LABEL, label);
+        model.addAttribute(EL_TAR, elTar);
+        model.addAttribute(GAS_TAR, gasTar);
+        model.addAttribute(HEAT_TAR, heatTar);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return OPERATOR_ADD_OPERATOR;
     }
 
-    @PostMapping("/add-operator")
-    public String addOperator(@RequestParam("operLabel") String operLabel,
-                              @RequestParam("adminLabel") String adminLabel) {
-        operatorService.createOperator(operLabel, adminLabel);
-        return "redirect:/operator";
+    @PostMapping(ADD_OPERATOR)
+    public String addOperator(@ModelAttribute(OPER) @Valid OperatorDto oper, BindingResult bindingResult,
+                              @RequestParam(ADMIN_LABEL) String adminLabel,
+                              @RequestParam(EL_TAR) Integer elId,
+                              @RequestParam(GAS_TAR) Integer gasId,
+                              @RequestParam(HEAT_TAR) Integer heatId) {
+        if (bindingResult.hasErrors())
+            return REDIRECT_ADMIN_ADD_OPERATOR;
+        operatorService.createOperator(oper, adminLabel, elId, gasId, heatId);
+        return REDIRECT_FOR_ALL;
     }
 
-    @GetMapping("/edit-operator/{id}")
-    public String editOperator(@PathVariable("id") Integer id, Model model) {
+    @GetMapping(EDIT_OPERATOR_ID)
+    public String editOperator(@PathVariable(ID) Integer id, Model model) {
         OperatorDto operator = operatorService.getOperatorById(id);
-        List<AdminDto> allAdmin = operatorService.getAllAdmin();
-        model.addAttribute("admin", allAdmin);
-        model.addAttribute("oper", operator);
-        return "/operator/edit-operator";
+        model.addAttribute(OPER, operator);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return OPERATOR_EDIT_OPERATOR;
     }
 
-    @PostMapping("/edit-operator")
-    public String editOperator(@ModelAttribute("oper") OperatorDto operator,
-                               @RequestParam("admi") Integer id) {
+    @PostMapping(EDIT_OPERATOR)
+    public String editOperator(@ModelAttribute(OPER) @Valid OperatorDto operator,
+                               BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+            return OPERATOR_EDIT_OPERATOR;
+        }
+        Integer id = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
         operatorService.updateOperator(operator, id);
-        return "redirect:/operator";
+        return REDIRECT_ADMIN_ALL_ADMIN_OPERATORS;
     }
 
 
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    @GetMapping(DELETE_ID)
+    public String delete(@PathVariable(ID) Integer id) {
         operatorService.deleteOperator(id);
-        return "redirect:/operator";
+        return REDIRECT_ADMIN_ALL_ADMIN_OPERATORS;
     }
 
-    @GetMapping("/allAdmin-operators")
+    @GetMapping(ALL_ADMIN_OPERATORS)
     public String allAdminOperators(Principal principal, Model model) {
         Integer id = userService.getUserByName(principal.getName()).getAdmin().getId();
         List<OperatorDto> oper = operatorService.getAllAdminsOperators(id);
-        model.addAttribute("operDto", oper);
+        model.addAttribute(OPER_DTO, oper);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
         return "/operator/admins-operators";
     }
 
-    @GetMapping("/find-operator")
-    public String findOperator(Model model) {
-        List<OperatorDto> allOperators = operatorService.getAllOperators();
-        model.addAttribute("oper", allOperators);
-        return "/operator/find-operator";
-    }
-
-    @GetMapping("/info-operator")
-    public String infoOperator(@RequestParam("operLabel") String operLabel, Model model,
-                               HttpSession session) {
-        session.setAttribute("name", operLabel);
-        long consumer = operatorService.getConsumersOfOperator(operLabel);
-        OperatorDto oper = operatorService.getOperatorByLabel(operLabel);
-        List<ElectricityTariffDto> elTar = operatorService.electricityTariffsOfOperator(operLabel);
-        List<GasTariffDto> gasTar = operatorService.gasTariffsOfOperator(operLabel);
-        List<HeatTariffDto> heatTar = operatorService.heatTariffsOfOperator(operLabel);
-        model.addAttribute("consumer", consumer);
-        model.addAttribute("operator", oper);
-        model.addAttribute("elTar", elTar);
-        model.addAttribute("gasTar", gasTar);
-        model.addAttribute("heatTar", heatTar);
-        return "/operator/info-operator";
-    }
-
-    @GetMapping("/all-tariff/{adLabel}")
-    public String getAllTariffs(@PathVariable("adLabel") String adminLabel,
+    @GetMapping(ALL_TARIFF_AD_LABEL)
+    public String getAllTariffs(@PathVariable(AD_LABEL) String adminLabel,
                                 Model model) {
         List<ElectricityTariffDto> elTar = operatorService.getElTariffsCreateByAdmin(adminLabel);
         List<GasTariffDto> gasTar = operatorService.getGasTariffsCreateByAdmin(adminLabel);
         List<HeatTariffDto> heatTar = operatorService.getHeatTariffsCreateByAdmin(adminLabel);
-        model.addAttribute("elTar", elTar);
-        model.addAttribute("gasTar", gasTar);
-        model.addAttribute("heatTar", heatTar);
-        return "/tariffs/all-tariffs";
+        model.addAttribute(EL_TAR, elTar);
+        model.addAttribute(GAS_TAR, gasTar);
+        model.addAttribute(HEAT_TAR, heatTar);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return TARIFFS_ALL_TARIFFS;
     }
 
-    @GetMapping("/add-tariff")
-    public String addTariffToOperator(@RequestParam("id") Integer id,
-                                      @RequestParam("value") String value, HttpSession session) {
-        String name = (String) session.getAttribute("name");
+    @GetMapping(ADD_TARIFF)
+    public String addTariffToOperator(@RequestParam(ID) Integer id,
+                                      @RequestParam(VALUE) String value) {
+        String name = (String) session.getAttribute(NAME);
         operatorService.addTariffToOperator(value, id, name);
-        return "redirect:/operator/info-operator?operLabel=" + name;
+        return REDIRECT_FOR_ALL_INFO_OPERATOR_OPER_LABEL + name;
     }
 
-    @GetMapping("/deleteTariff")
-    public String deleteTariffFromOperator(@RequestParam("id") Integer id,
-                                           @RequestParam("value") String value, HttpSession session) {
-        String name = (String) session.getAttribute("name");
+    @GetMapping(DELETE_TARIFF)
+    public String deleteTariffFromOperator(@RequestParam(ID) Integer id,
+                                           @RequestParam(VALUE) String value) {
+        String name = (String) session.getAttribute(NAME);
         operatorService.deleteTariffFromOperator(id, value, name);
-        return "redirect:/operator/info-operator?operLabel=" + name;
+        return REDIRECT_FOR_ALL_INFO_OPERATOR_OPER_LABEL + name;
+    }
+
+    @GetMapping(DELETE_EL_TAR_ID)
+    public String deleteElTar(@PathVariable(ID) Integer id) {
+        tariffsService.deleteElTar(id);
+        return REDIRECT_FOR_ALL_EL_TAR;
+    }
+
+    @GetMapping(DELETE_GAS_TAR_ID)
+    public String deleteGasTar(@PathVariable(ID) Integer id) {
+        tariffsService.deleteGasTar(id);
+        return REDIRECT_FOR_ALL_GAS_TAR;
+    }
+
+    @GetMapping(DELETE_HEAT_TAR_ID)
+    public String deleteHeatTar(@PathVariable(ID) Integer id) {
+        tariffsService.deleteHeatTar(id);
+        return REDIRECT_FOR_ALL_HEAT_TAR;
+    }
+
+    @GetMapping(EDIT_EL_TAR_ID)
+    public String editElTar(@PathVariable(ID) Integer id, Model model) {
+        ElectricityTariffDto elTar = tariffsService.getElTar(id);
+        model.addAttribute(EL_TAR, elTar);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return TARIFFS_EDIT_EL_TAR;
+    }
+
+    @PostMapping(EDIT_EL_TAR)
+    public String editElTar(@ModelAttribute(EL_TAR) @Valid ElectricityTariffDto el,
+                            BindingResult bindingResult, Model model) {
+        Integer id = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(EL_TAR, el);
+            return TARIFFS_EDIT_EL_TAR;
+        }
+        tariffsService.updateElTar(el, id);
+        return REDIRECT_FOR_ALL_EL_TAR;
+    }
+
+    @GetMapping(EDIT_GAS_TAR_ID)
+    public String editGasTar(@PathVariable(ID) Integer id, Model model) {
+        GasTariffDto gasTar = tariffsService.getGasTar(id);
+        model.addAttribute(GAS_TAR, gasTar);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return TARIFFS_EDIT_GAS_TAR;
+    }
+
+    @PostMapping(EDIT_GAS_TAR)
+    public String editElTar(@ModelAttribute(GAS_TAR) @Valid GasTariffDto gas,
+                            BindingResult bindingResult, Model model) {
+        Integer id = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(GAS_TAR, gas);
+            return TARIFFS_EDIT_GAS_TAR;
+        }
+        tariffsService.updateGasTar(gas, id);
+        return REDIRECT_FOR_ALL_GAS_TAR;
+
+    }
+
+    @GetMapping(EDIT_HEAT_TAR_ID)
+    public String editHeatTar(@PathVariable(ID) Integer id, Model model) {
+        HeatTariffDto heatTar = tariffsService.getHeatTar(id);
+        model.addAttribute(HEAT_TAR, heatTar);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return TARIFFS_EDIT_HEAT_TAR;
+    }
+
+    @PostMapping(EDIT_HEAT_TAR)
+    public String editHeatTar(@ModelAttribute(HEAT_TAR) @Valid HeatTariffDto heat,
+                              BindingResult bindingResult, Model model) {
+        Integer id = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
+        tariffsService.updateHeatTar(heat, id);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(HEAT_TAR, heat);
+            model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+            return TARIFFS_EDIT_HEAT_TAR;
+        }
+        return REDIRECT_FOR_ALL_HEAT_TAR;
+    }
+
+    @GetMapping(ADD_TAR_VALUE)
+    public String addTar(Model model,
+                         @PathVariable(VALUE) String value) {
+        model.addAttribute(VALUE, value);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return TARIFFS_CREATE_TARIFF;
+    }
+
+    @PostMapping(ADD_TAR)
+    public String addTar(@RequestParam(VALUE) String value,
+                         @RequestParam(TARR) BigDecimal tariff) {
+        Integer adminId = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
+        tariffsService.createTariff(adminId, value, tariff);
+        return REDIRECT_FOR_ALL1 + value + TAR;
+    }
+
+    @GetMapping(CREATE_ADMIN)
+    public String createAdmin(@ModelAttribute(ADMIN) AdminDto admin, Model model) {
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return OPERATOR_CREATE_ADMIN;
+    }
+
+    @PostMapping(CREATE_ADMIN)
+    public String saveAdmin(@ModelAttribute(ADMIN) @Valid AdminDto admin, BindingResult bindingResult,
+                            Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+            return OPERATOR_CREATE_ADMIN;
+        }
+        adminService.createAdmin(admin);
+        List<AdminDto> allAdmins = adminService.getAllAdmins();
+        model.addAttribute(ADMIN_DTO, allAdmins);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return OPERATOR_ALL_ADMINS;
+    }
+
+    @GetMapping(ADMIN_LIST)
+    public String getAdmins(Model model) {
+        List<AdminDto> allAdmins = adminService.getAllAdmins();
+        model.addAttribute(ADMIN_DTO, allAdmins);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return OPERATOR_ALL_ADMINS;
     }
 }

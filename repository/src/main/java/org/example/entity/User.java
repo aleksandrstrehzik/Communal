@@ -26,7 +26,7 @@ public class User {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH},
+    @ManyToMany(cascade = {CascadeType.ALL},
             fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

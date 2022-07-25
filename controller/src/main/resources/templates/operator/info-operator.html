@@ -8,17 +8,21 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;" ></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;" ></header>
 <div class="container mt-5">
     <div class="row mb-2">
         <div class="col-md-4">
             <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-bottom: #1b1e21">
-                <div class="card-body d-flex flex-column align-items-start">
+                <div class="card-body d-flex flex-column align-items-start" style="width: 100%">
                     <h3 class="mb-0 text-dark" th:text="${operator.label}"></h3>
                     <p class="card-text mb-auto">Всякий текст</p>
                     <hr class="my-4">
-                    <h3>Количество подключенных пользователей</h3>
+                    <h5>Количество подключенных пользователей</h5>
                     <h4 th:text="${consumer}"></h4>
+                    <div th:if="${conWithOut} != null">
+                        <h5>Количество подключенных без тарифа</h5>
+                        <h4 th:text="${conWithOut.size}"></h4>
+                    </div>
                 </div>
                 <img th:src="@{/images/minsk.png}" width="100px" height="100px">
             </div>
@@ -31,13 +35,13 @@
                         <th>Id</th>
                         <th>Головная организация</th>
                         <th>Стоимость</th>
-                        <th>Удалить тариф у оператора</th>
+                        <th th:if="${flag == true}">Удалить тариф у оператора</th>
                     </tr>
                         <tr th:each="el : ${elTar}">
                             <td th:text="${el.id}"></td>
                             <td th:text="${el.admin.label}"></td>
                             <td th:text="${el.tariff}"></td>
-                            <td><a th:href="@{'/admin/deleteTariff?id=' + ${el.id} +'&value=el'}">Удалить</a></td>
+                            <td th:if="${flag == true}"><a th:href="@{'/admin/deleteTariff?id=' + ${el.id} +'&value=el'}">Удалить</a></td>
                         </tr>
                 </table>
                 <h4 class="text-center">Тарифы на газ</h4>
@@ -46,13 +50,13 @@
                         <th>Id</th>
                         <th>Головная организация</th>
                         <th>Стоимость</th>
-                        <th>Удалить тариф у оператора</th>
+                        <th th:if="${flag == true}">Удалить тариф у оператора</th>
                     </tr>
                     <tr th:each="gas : ${gasTar}">
                         <td th:text="${gas.id}"></td>
                         <td th:text="${gas.admin.label}"></td>
                         <td th:text="${gas.tariff}"></td>
-                        <td><a th:href="@{'/admin/deleteTariff?id=' + ${gas.id} +'&value=gas'}">Удалить</a></td>
+                        <td th:if="${flag == true}"><a th:href="@{'/admin/deleteTariff?id=' + ${gas.id} +'&value=gas'}">Удалить</a></td>
                     </tr>
                 </table>
                 <h4 class="text-center">Тарифы на теплоту</h4>
@@ -61,16 +65,16 @@
                         <th>Id</th>
                         <th>Головная организация</th>
                         <th>Стоимость</th>
-                        <th>Удалить тариф у оператора</th>
+                        <th th:if="${flag == true}">Удалить тариф у оператора</th>
                     </tr>
                     <tr th:each="heat : ${heatTar}">
                         <td th:text="${heat.id}"></td>
                         <td th:text="${heat.admin.label}"></td>
                         <td th:text="${heat.tariff}"></td>
-                        <td><a th:href="@{'/admin/deleteTariff?id=' + ${heat.id} +'&value=heat'}">Удалить</a></td>
+                        <td th:if="${flag == true}"><a th:href="@{'/admin/deleteTariff?id=' + ${heat.id} +'&value=heat'}">Удалить</a></td>
                     </tr>
                 </table>
-                <a th:href="@{/admin/all-tariff/{adLabel}(adLabel=${operator.admin.label})}" class="btn btn-success" style="width: 160px; float: right">Добавить тарифы</a>
+                <a th:if="${flag == true}" th:href="@{/admin/all-tariff/{adLabel}(adLabel=${operator.admin.label})}" class="btn btn-success" style="width: 160px; float: right">Добавить тарифы</a>
             </div>
         </div>
     </div>

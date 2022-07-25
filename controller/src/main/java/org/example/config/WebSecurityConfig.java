@@ -1,8 +1,6 @@
 package org.example.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import static org.example.config.MockUtils.*;
 
 @Configuration
 @EnableWebSecurity
@@ -24,16 +24,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/").hasAnyAuthority("CONSUMER")
-                .antMatchers("/", "/horse-create/*").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/index").permitAll()
+                .antMatchers(OPERATOR_URL, OPERATOR_PAGE_NUMBER).hasAnyAuthority(ADMIN, OPERATOR)
+                .antMatchers(ADMIN1).hasAuthority(ADMIN)
+                .antMatchers(OPERATOR1).hasAuthority(OPERATOR)
+                .antMatchers(CONSUMER1).hasAuthority(CONSUMER)
+                .antMatchers(FOR_ALL).permitAll()
                 .and()
                 .formLogin().permitAll()
                 .defaultSuccessUrl("/", true)
                 .and()
                 .logout()
                 .permitAll()
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl(LOGIN);
     }
 
     @Autowired

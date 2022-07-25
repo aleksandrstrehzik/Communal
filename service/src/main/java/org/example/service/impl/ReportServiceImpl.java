@@ -1,17 +1,16 @@
 package org.example.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dao.*;
+import org.example.dao.ConsumerRepository;
+import org.example.dao.MonthReportRepository;
 import org.example.dto.MonthReportDto;
 import org.example.entity.Consumer;
 import org.example.entity.MonthReport;
 import org.example.entity.enums.Months;
-import org.example.mapper.ElectricityTariffMapper;
-import org.example.mapper.GasTariffMapper;
-import org.example.mapper.HeatTariffMapper;
 import org.example.mapper.MonthReportMapper;
 import org.example.service.ReportService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,14 +23,9 @@ public class ReportServiceImpl implements ReportService {
     private final MonthReportRepository repRep;
     private final MonthReportMapper reportMapper;
     private final ConsumerRepository consumerRepository;
-    private final ElectricityTariffRepository elRepository;
-    private final GasTariffRepository gasRepository;
-    private final HeatTariffRepository heatRepository;
-    private final ElectricityTariffMapper elMapper;
-    private final GasTariffMapper gasMapper;
-    private final HeatTariffMapper heatMapper;
 
 
+    @Transactional
     public void createReport(Integer consumerId, BigDecimal elValue, BigDecimal gasValue,
                              BigDecimal heatValue, String month, Integer year) {
         Consumer consumer = consumerRepository.getReferenceById(consumerId);
@@ -133,6 +127,7 @@ public class ReportServiceImpl implements ReportService {
         return reportMapper.toDto(repRep.getReferenceById(id));
     }
 
+    @Transactional
     public void editReport(Integer consId, MonthReportDto report) {
         MonthReport repNew = reportMapper.toEntity(report);
         MonthReport repOld = repRep.getReferenceById(report.getId());
@@ -158,7 +153,7 @@ public class ReportServiceImpl implements ReportService {
         repNew.setTotalGasConsumed(repOld.getTotalGasConsumed().
                 add(gasDif));
         repNew.setTotalHeatConsumed(repOld.getTotalHeatConsumed()
-                .add(heatDif));//тут возмжно менять
+                .add(heatDif));
         repNew.setPaymentElEnergy(calculationElPayment(repNew.getAmountOfElectricityEnergyConsumed(), repNew.getElectricityTariff()));
         repNew.setPaymentForGas(calculationGasPayment(repNew.getVolumeOfConsumedGas(), repNew.getGasTariff()));
         repNew.setPaymentHeatEnergy(calculationHeatPayment(repNew.getAmountOfHeatEnergyConsumed(), repNew.getGasTariff()));
@@ -166,34 +161,20 @@ public class ReportServiceImpl implements ReportService {
         repNew.setTotalPayment(totalPay);
         if (totalPay.compareTo(repOld.getTotalPayment()) >= 0) {
             repNew.setIsPaid(false);
-            /*cons.setChessTur(repOld.getTotalPayment().subtract(totalPay));*/
         } else {
             repNew.setIsPaid(true);
-           /* cons.setChessTur(repOld.getTotalPayment().subtract(totalPay));*/
+        }
+        if (cons.getSw() != null) {
+            BigDecimal add = cons.getSw().add(repOld.getTotalPayment().subtract(totalPay));
+            cons.setSw(add);
+        } else {
+            cons.setSw(repOld.getTotalPayment().subtract(totalPay));
         }
         repRep.save(repNew);
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
         System.out.println(repNew);
-       /* List<MonthReport> collect = repRep.findAllHightReport(consId, report.getId()).stream()
-                .peek(monthReport -> setTotalResults(monthReport, elDif, gasDif, heatDif))
-                .collect(Collectors.toList());
-        repRep.saveAll(collect);*/
     }
 
     public MonthReportDto getLastMonthReportOfConsumer(Integer consId) {
         return reportMapper.toDto(repRep.findPreviousReport(consId));
     }
-
-
- /*   public void setTotalResults(MonthReport rep, BigDecimal elDif, BigDecimal gasDif, BigDecimal heatDif) {
-        rep.setTotalElConsumed(rep.getTotalElConsumed().add(elDif));
-        rep.setTotalGasConsumed(rep.getTotalGasConsumed().add(gasDif));
-        rep.setTotalHeatConsumed(rep.getTotalHeatConsumed().add(heatDif));
-    }*/
-
 }

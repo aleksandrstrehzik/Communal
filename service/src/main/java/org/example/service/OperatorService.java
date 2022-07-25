@@ -15,7 +15,7 @@ public interface OperatorService {
 
     void deleteOperator(Integer id);
 
-    void createOperator(String operLabel, String adminLabel);
+    void createOperator(OperatorDto oper, String adminLabel, Integer elTar, Integer gasTar, Integer heatTar);
 
     Page<OperatorDto> findAllPaginated(int pageNumber, String sortField, String sortDirection);
 
@@ -48,4 +48,8 @@ public interface OperatorService {
     List<HeatTariffDto> getHeatTariffsCreateByAdmin(String adminLabel);
 
     List<OperatorDto> getAllAdminsOperators(Integer adminId);
+
+    List<ConsumerDto> getConsumersWithOutTariff(String operLabel);
+
+    List<ConsumerDto> getOperatorConsumersList(String operLabel);
 }

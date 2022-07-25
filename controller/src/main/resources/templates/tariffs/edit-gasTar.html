@@ -8,16 +8,13 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5" style="width: 500px">
     <h3 class="text-center">Изменение оператора</h3>
-    <form th:method="POST" th:action="@{/tariffs/editGasTar}" th:object="${gasTar}">
+    <form th:method="POST" th:action="@{/admin/editGasTar}" th:object="${gasTar}">
         <input type="hidden" th:field="*{id}">
-        <label>Админ:</label>
-        <select class="custom-select d-block w-100" name="admi">
-            <option th:each="a : ${admin}" th:value="${a.id}" th:text="${a.label}" class="form-control" style="width: 150px"></option>
-        </select>
-        <input type="text" th:field="*{tariff}" th:placeholder="${gasTar.tariff}" class="form-control"><br/>
+        <input type="text" th:field="*{tariff}" th:placeholder="${gasTar.tariff}" class="form-control">
+        <div th:if="${#fields.hasErrors('tariff')}" th:errors="*{tariff}" style="color: red">Ошибка</div><br/>
         <button type="submit" class="btn btn-success">Изменить</button>
     </form>
 </div>

@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body class="bg-light">
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
@@ -32,7 +32,7 @@
                     <div>
                         <h6 class="my-0">Оператор:</h6>
                     </div>
-                    <span class="text-muted" th:text="${cons.operator.label}"></span>
+                    <span class="text-muted" th:if="${cons.operator} != null" th:text="${cons.operator.label}"></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
@@ -47,26 +47,33 @@
                     </div>
                     <span class="text-muted" th:text="${cons.apartmentSquare}"></span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li th:if="${cons.electricityTariff} != null" class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Тариф на электричество:</h6>
                         <small class="text-muted">за кВт/ч</small>
                     </div>
                     <span class="text-muted" th:text="${cons.electricityTariff.tariff}"></span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li th:if="${cons.gasTariff} != null" class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Тариф на газ:</h6>
                         <small class="text-muted">за м3</small>
                     </div>
                     <span class="text-muted" th:text="${cons.gasTariff.tariff}"></span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li th:if="${cons.heatTariff} != null" class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
                         <h6 class="my-0">Тариф на подогрев воды</h6>
                         <small class="text-muted">за м3 горячей воды</small>
                     </div>
                     <span class="text-muted" th:text="${cons.heatTariff.tariff}"></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Задолжность по платежам</h6>
+                        <small class="text-muted">текущая</small>
+                    </div>
+                    <span class="text-muted" th:text="${cons.sw}"></span>
                 </li>
             </ul>
         </div>
@@ -76,7 +83,7 @@
                 <span class="text-muted">Какие поля хотите видеть</span>
                 <!--     <span class="badge badge-secondary badge-pill">3</span>-->
             </h4>
-            <form th:action="@{/consumer/allReport}" th:method="GET">
+            <form th:action="@{/operator/allReport}" th:method="GET">
                 <div class="row">
                     <div class="col-md-6 order-md-1">
                         <div class="form-check" th:if="${id != null}">
@@ -246,7 +253,6 @@
                 <input type="hidden" name="consId" th:value="${cons.id}">
                 <button type="submit" class="btn btn-secondary">Показать</button>
             </form>
-            <!--  </div>-->
         </div>
     </div>
     <div th:if="${repList != null}">
@@ -270,7 +276,7 @@
                 <th th:if="${operLabel != null}">Оператор</th>
                 <th th:if="${year != null}">Год</th>
                 <th th:if="${month != null}">Месяц</th>
-                <th>Изменить</th>
+                <th th:if="${flag == true}">Изменить</th>
             </tr>
             <tr th:each="rep : ${repList}">
                 <td th:if="${id != null}" th:text="${rep.id}"></td>
@@ -290,18 +296,15 @@
                 <td th:if="${operLabel != null}" th:text="${rep.operator}"></td>
                 <td th:if="${year != null}" th:text="${rep.year}"></td>
                 <td th:if="${month != null}" th:text="${rep.month}"></td>
-                <td><a th:href="@{/report/editReport/{id}(id=${rep.id})}">Изменить</a></td>
+                <td th:if="${flag == true}"><a th:href="@{/operator/editReport/{id}(id=${rep.id})}">Изменить</a></td>
             </tr>
         </table>
-        <div class="input-group-append">
+        <!--<div class="input-group-append">
             <button type="submit" class="btn btn-secondary">
-                <a th:href="@{/report/editTotalValue/{id}(id=${cons.id})}">Изменить</a>
+                <a th:href="@{/operator/editTotalValue/{id}(id=${cons.id})}">Изменить</a>
             </button>
             <small class="text-muted ">за м3 горячей воды</small>
-        </div>
-        <!--<h4 class="d-flex justify-content-between align-items-center mb-3">
-            <a th:href="@{/report/editTotalValue/{id}(id=${cons.id})}" class="btn-danger">Изменить</a>
-        </h4>-->
+        </div>-->
     </div>
 </div>
 </body>

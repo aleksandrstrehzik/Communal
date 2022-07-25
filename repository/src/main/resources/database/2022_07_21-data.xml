@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+
+    <changeSet id="31" author="Strezhik">
+        <sql>
+            INSERT INTO admin (id, label)
+            VALUES ('1', 'MinskEnergo');
+
+            INSERT INTO admin (id, label)
+            VALUES ('2', 'BrestEnergo');
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="32" author="Strezhik">
+        <sql>
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('1', 'ТЭЦ3', '1');
+
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('2', 'ТЭЦ4', '1');
+
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('3', 'БТЭЦ', '2');
+
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('4', 'Бресткие теплосети', '2');
+        </sql>
+    </changeSet>
+
+    <changeSet id="37" author="Strezhik">
+        <sql>
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id)
+            VALUES ('1', '80', 'Nikita', '3', 'Sahankov', '1');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id)
+            VALUES ('2', '60', 'Ivan', '2', 'Saganovich', '1');
+        </sql>
+    </changeSet>
+
+    <changeSet id="30" author="Strezhik">
+        <sql>
+            INSERT INTO user (id, user_name, password, admin_id)
+            VALUES ('1', 'MinskEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, admin_id)
+            VALUES ('2', 'BrestEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('3', 'ТЭЦ3', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('4', 'ТЭЦ4', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('5', 'БТЭЦ', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('6', 'Бресткие теплосети', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('7', 'Nikita', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('8', 'Ivan', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+        </sql>
+    </changeSet>
+
+    <changeSet id="33" author="Strezhik">
+        <sql>
+            INSERT INTO roles (id, name)
+            VALUES ('1', 'ADMIN');
+
+            INSERT INTO roles (id, name)
+            VALUES ('2', 'OPERATOR');
+
+            INSERT INTO roles (id, name)
+            VALUES ('3', 'CONSUMER');
+        </sql>
+    </changeSet>
+
+    <changeSet id="34" author="Strezhik">
+        <sql>
+            INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
+            VALUES ('1', '23.5', '1');
+
+            INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
+            VALUES ('2', '54.3', '1');
+
+            INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
+            VALUES ('3', '44', '1');
+
+            INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
+            VALUES ('4', '4.5', '2');
+
+            INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
+            VALUES ('5', '6.3', '2');
+
+            INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
+            VALUES ('6', '7', '2');
+        </sql>
+    </changeSet>
+
+    <changeSet id="35" author="Strezhik">
+        <sql>
+            INSERT INTO gas_tariff (id, gas_tariff, admin_id)
+            VALUES ('1', '2.5', '1');
+
+            INSERT INTO gas_tariff (id, gas_tariff, admin_id)
+            VALUES ('2', '4.3', '1');
+
+            INSERT INTO gas_tariff (id, gas_tariff, admin_id)
+            VALUES ('3', '4', '1');
+
+            INSERT INTO gas_tariff (id, gas_tariff, admin_id)
+            VALUES ('4', '12', '2');
+
+            INSERT INTO gas_tariff (id, gas_tariff, admin_id)
+            VALUES ('5', '16.3', '2');
+
+            INSERT INTO gas_tariff (id, gas_tariff, admin_id)
+            VALUES ('6', '6.8', '2');
+        </sql>
+    </changeSet>
+
+    <changeSet id="36" author="Strezhik">
+        <sql>
+            INSERT INTO heat_tariff (id, heat_tariff, admin_id)
+            VALUES ('1', '112.5', '1');
+
+            INSERT INTO heat_tariff (id, heat_tariff, admin_id)
+            VALUES ('2', '114.3', '1');
+
+            INSERT INTO heat_tariff (id, heat_tariff, admin_id)
+            VALUES ('3', '114', '1');
+
+            INSERT INTO heat_tariff (id, heat_tariff, admin_id)
+            VALUES ('4', '34', '2');
+
+            INSERT INTO heat_tariff (id, heat_tariff, admin_id)
+            VALUES ('5', '19', '2');
+
+            INSERT INTO heat_tariff (id, heat_tariff, admin_id)
+            VALUES ('6', '45.5', '2');
+        </sql>
+    </changeSet>
+
+    <changeSet id="38" author="Strezhik">
+        <sql>
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('1', '1');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('2', '1');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('3', '2');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('4', '2');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('5', '2');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('6', '2');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('7', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('8', '3');
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>
+
+

@@ -7,14 +7,14 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5">
     <h3 class="text-center">Операторы</h3>
 <table class="table table-bordered table-hover text-center">
     <tr class="table-dark text-dark">
-        <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a></th>
-        <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=admin&sortDir=' + ${reverseSortDir}}">Администратор</a></th>
-        <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=label&sortDir=' + ${reverseSortDir}}">Название</a></th>
+        <th><a th:href="@{'/forAll/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a></th>
+        <th><a th:href="@{'/forAll/' + ${currentPage} + '?sortField=admin&sortDir=' + ${reverseSortDir}}">Администратор</a></th>
+        <th><a th:href="@{'/forAll/' + ${currentPage} + '?sortField=label&sortDir=' + ${reverseSortDir}}">Название</a></th>
     </tr>
         <tr th:each="oper : ${operDto}">
             <td th:text="${oper.id}"></td>
@@ -25,21 +25,21 @@
 </div>
 <div style="text-align: center;">
 
-        <a class="page-link" th:if="${currentPage > 1}" th:href="@{'/operator/'+ ${1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая</a>
+        <a class="page-link" th:if="${currentPage > 1}" th:href="@{'/forAll/'+ ${1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая</a>
         <span th:unless="${currentPage > 1}">Первая</span>
 
-        <a th:if="${currentPage > 1}" th:href="@{'/operator/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Предыдущая</a>
+        <a th:if="${currentPage > 1}" th:href="@{'/forAll/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Предыдущая</a>
         <span th:unless="${currentPage > 1}">Предыдущая</span>
 
         <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-        <a th:if="${i != currentPage}" th:href="@{'/operator/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+        <a th:if="${i != currentPage}" th:href="@{'/forAll/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
         <span th:unless="${i != currentPage}">[[${i}]]</span>
         </span>
 
-        <a th:if="${currentPage < totalPages}" th:href="@{'/operator/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Следующая</a>
+        <a th:if="${currentPage < totalPages}" th:href="@{'/forAll/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Следующая</a>
         <span th:unless="${currentPage < totalPages}">Следующая</span>
 
-        <a th:if="${currentPage < totalPages}" th:href="@{'/operator/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя</a>
+        <a th:if="${currentPage < totalPages}" th:href="@{'/forAll/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя</a>
         <span th:unless="${currentPage < totalPages}">Последняя</span>
         <p>
             Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]

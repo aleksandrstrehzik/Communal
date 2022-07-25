@@ -7,22 +7,20 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head"></header>
+<header th:insert="home-page :: header"></header>
 <div class="container mt-5">
     <h3 class="text-center">Потребители</h3>
     <table class="table table-bordered table-hover text-center">
         <tr class="table-dark text-dark">
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=operator&sortDir=' + ${reverseSortDir}}">Оператор</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Имя</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=apartmentSquare&sortDir=' + ${reverseSortDir}}">Площадь</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=numberOfResidents&sortDir=' + ${reverseSortDir}}">Кол. Проживающих</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=electricityTariff&sortDir=' + ${reverseSortDir}}">Эл. тариф</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=gasTariff&sortDir=' + ${reverseSortDir}}">Газ. тариф</a></th>
-            <th><a th:href="@{'/consumer/' + ${currentPage} + '?sortField=heatTariff&sortDir=' + ${reverseSortDir}}">Теп. тариф</a></th>
-            <th>Изменить</th>
-            <th>Удалить</th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Id</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=operator&sortDir=' + ${reverseSortDir}}">Оператор</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Имя</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=apartmentSquare&sortDir=' + ${reverseSortDir}}">Площадь</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=numberOfResidents&sortDir=' + ${reverseSortDir}}">Кол. Проживающих</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=electricityTariff&sortDir=' + ${reverseSortDir}}">Эл. тариф</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=gasTariff&sortDir=' + ${reverseSortDir}}">Газ. тариф</a></th>
+            <th><a th:href="@{'/operator/' + ${currentPage} + '?sortField=heatTariff&sortDir=' + ${reverseSortDir}}">Теп. тариф</a></th>
         </tr>
         <tr th:each="con : ${consumerDto}">
             <td th:text="${con.getId()}"></td>
@@ -54,8 +52,6 @@
             <div th:if="${con.getHeatTariff() == null}">
                 <td th:text="none"></td>
             </div>
-            <td><a th:href="@{/consumer/editConsumer/{id}(id=${con.id})}">Изменить</a></td>
-            <td><a th:href="@{/consumer/deleteConsumer/{id}(id=${con.id})}">Удалить</a></td>
         </tr>
     </table>
 </div>

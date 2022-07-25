@@ -1,50 +1,132 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="head">
-<nav>
-    <ul>
-        <li><img th:src="@{/images/logo.png}" width="50px"></li>
-        <li><a th:href="@{/}" aria-current="page">Главная</a></li>
-        <li><a>Операторы</a>
-            <ul>
-                <li><a th:href="@{/operator}">Список операторов</a></li>
-                <li><a th:href="@{/admin/allAdmin-operators}">Список моих операторов</a></li>
-                <li><a th:href="@{/admin/add-operator}">Добавить
-                    оператора</a>
-                </li>
-                <li><a th:href="@{/admin/find-operator}">Данные
-                    оператора</a></li>
-            </ul>
-        <li><a>Потребители</a>
-            <ul>
-                <li><a th:href="@{/consumer}">Список потребителей</a>
-                </li>
-                <li><a th:href="@{/consumer/addConsumer}">Добавить
-                    потребителя</a></li>
-                <li><a th:href="@{/consumer/findConsInfo}">Данные
-                    потребителя</a></li>
-            </ul>
-        <li><a>Тарифы</a>
-            <ul>
-                <li><a th:href="@{/tariffs/elTar}">Тарифы на
-                    электричество</a>
-                </li>
-                <li><a th:href="@{/tariffs/gasTar}">Тарифы на газ</a></li>
-                <li><a th:href="@{/tariffs/heatTar}">Тарифы на
-                    отопление</a>
-                </li>
-            </ul>
-        <li><a>Личный кабинет</a>
-            <ul>
-                <li><a th:href="@{/report}">Оплатить</a></li>
-                <li><a th:href="@{/report/allReports}">История платежей</a></li>
-            </ul>
-        <li><a>Связаться с нами</a>
-            <ul>
-                <li><a href="#">Список операторов</a></li>
-            </ul>
-        </li>
-    </ul>
-</nav>
+    <nav>
+        <ul>
+            <li><img th:src="@{/images/logo.png}" width="50px"></li>
+            <li><a th:href="@{/}" aria-current="page">Главная</a></li>
+            <li><a>Операторы</a>
+                <ul>
+                    <li><a th:href="@{/forAll}">Список операторов</a></li>
+                    <li><a th:href="@{/forAll/find-operator}">Данные
+                        оператора</a></li>
+                </ul>
+            <li><a>Тарифы</a>
+                <ul>
+                    <li><a th:href="@{/forAll/elTar}">Тарифы на
+                        электричество</a>
+                    </li>
+                    <li><a th:href="@{/forAll/gasTar}">Тарифы на газ</a></li>
+                    <li><a th:href="@{/forAll/heatTar}">Тарифы на
+                        отопление</a>
+                    </li>
+                </ul>
+            <li><a th:href="@{/login}">Войти</a></li>
+        </ul>
+    </nav>
+</div>
+<div th:fragment="admin_head">
+    <nav>
+        <ul>
+            <li><img th:src="@{/images/logo.png}" width="50px"></li>
+            <li><a th:href="@{/}" aria-current="page">Главная</a></li>
+            <li><a>Операторы</a>
+                <ul>
+                    <li><a th:href="@{/forAll}">Список операторов</a></li>
+                    <li><a th:href="@{/admin/allAdmin-operators}">Список моих операторов</a></li>
+                    <li><a th:href="@{/admin/add-operator}">Добавить
+                        оператора</a>
+                    </li>
+                    <li><a th:href="@{/forAll/find-operator}">Данные
+                        оператора</a></li>
+                    <li><a th:href="@{/admin/createAdmin}">Добавить админа</a></li>
+                    <li><a th:href="@{/admin/adminList}">Список админов</a></li>
+                </ul>
+            <li><a>Потребители</a>
+                <ul>
+                    <li><a th:href="@{/operator}">Список потребителей</a>
+                    </li>
+                    <li><a th:href="@{/operator/findConsInfo}">Данные
+                        потребителя</a></li>
+                </ul>
+            <li><a>Тарифы</a>
+                <ul>
+                    <li><a th:href="@{/forAll/elTar}">Тарифы на
+                        электричество</a>
+                    </li>
+                    <li><a th:href="@{/forAll/gasTar}">Тарифы на газ</a></li>
+                    <li><a th:href="@{/forAll/heatTar}">Тарифы на
+                        отопление</a>
+                    </li>
+                </ul>
+            <li><a th:href="@{/login}">Войти</a></li>
+        </ul>
+    </nav>
+</div>
+<div th:fragment="operator_head">
+    <nav>
+        <ul>
+            <li><img th:src="@{/images/logo.png}" width="50px"></li>
+            <li><a th:href="@{/}" aria-current="page">Главная</a></li>
+            <li><a>Операторы</a>
+                <ul>
+                    <li><a th:href="@{/forAll}">Список операторов</a></li>
+                    <li><a th:href="@{/forAll/find-operator}">Данные
+                        оператора</a></li>
+                </ul>
+            <li><a>Потребители</a>
+                <ul>
+                    <li><a th:href="@{/operator}">Список потребителей</a>
+                    </li>
+                    <li><a th:href="@{/operator/findOpCons}">Список моих потребителей</a>
+                    </li>
+                    <li><a th:href="@{/operator/addConsumer}">Добавить
+                        потребителя</a></li>
+                    <li><a th:href="@{/operator/findConsInfo}">Данные
+                        потребителя</a></li>
+                </ul>
+            <li><a>Тарифы</a>
+                <ul>
+                    <li><a th:href="@{/forAll/elTar}">Тарифы на
+                        электричество</a>
+                    </li>
+                    <li><a th:href="@{/forAll/gasTar}">Тарифы на газ</a></li>
+                    <li><a th:href="@{/forAll/heatTar}">Тарифы на
+                        отопление</a>
+                    </li>
+                </ul>
+            <li><a th:href="@{/login}">Войти</a></li>
+        </ul>
+    </nav>
+</div>
+<div th:fragment="consumer_head">
+    <nav>
+        <ul>
+            <li><img th:src="@{/images/logo.png}" width="50px"></li>
+            <li><a th:href="@{/}" aria-current="page">Главная</a></li>
+            <li><a>Операторы</a>
+                <ul>
+                    <li><a th:href="@{/forAll}">Список операторов</a></li>
+                    <li><a th:href="@{/forAll/find-operator}">Данные
+                        оператора</a></li>
+                </ul>
+            <li><a>Тарифы</a>
+                <ul>
+                    <li><a th:href="@{/forAll/elTar}">Тарифы на
+                        электричество</a>
+                    </li>
+                    <li><a th:href="@{/forAll/gasTar}">Тарифы на газ</a></li>
+                    <li><a th:href="@{/forAll/heatTar}">Тарифы на
+                        отопление</a>
+                    </li>
+                </ul>
+            <li><a>Личный кабинет</a>
+                <ul>
+                    <li><a th:href="@{/consumer/createReport}">Оплатить</a></li>
+                    <li><a th:href="@{/consumer/allReports}">История платежей</a></li>
+                </ul>
+            <li><a th:href="@{/login}">Войти</a></li>
+        </ul>
+    </nav>
 </div>
 </html>

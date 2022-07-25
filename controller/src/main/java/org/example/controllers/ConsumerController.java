@@ -1,163 +1,104 @@
 package org.example.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.example.dto.*;
+import org.example.dto.ConsumerDto;
 import org.example.entity.enums.Months;
-import org.example.service.ConsumerService;
-import org.example.service.OperatorService;
 import org.example.service.ReportService;
-import org.springframework.data.domain.Page;
+import org.example.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.security.Principal;
+
+import static org.example.controllers.MockUtils.*;
 
 @Controller
-@RequestMapping("/consumer")
+@RequestMapping(CONSUMER)
 @RequiredArgsConstructor
 public class ConsumerController {
 
-    private final ConsumerService consumerService;
-    private final OperatorService operatorService;
     private final ReportService reportService;
+    private final UserService userService;
+    private final HttpSession session;
 
-    @GetMapping("/{pageNumber}")
-    public String getPaginatedConsumers(@PathVariable(value = "pageNumber") int pageNumber, @RequestParam("sortField") String sortField,
-                                        @RequestParam("sortDir") String sortDir, Model model) {
-        Page<ConsumerDto> page = consumerService.findAllPaginated(pageNumber, sortField, sortDir);
-        int totalPages = page.getTotalPages();
-        long totalItems = page.getTotalElements();
-        List<ConsumerDto> cons = page.getContent();
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
-        model.addAttribute("consumerDto", cons);
-        return "/consumer/all-consumers";
-    }
-
-    @GetMapping()
-    public String showHorsesFirstPage(Model model) {
-        return getPaginatedConsumers(1, "id", "asc", model);
-    }
-
-    @GetMapping("/editConsumer/{id}")
-    public String editConsumer(@PathVariable("id") Integer id, Model model) {
-        ConsumerDto cons = consumerService.getConsumerById(id);
-        List<OperatorDto> operDto = operatorService.getAllOperators();
-        List<ElectricityTariffDto> elTar = operatorService.getAllElTariffs();
-        List<GasTariffDto> gasTar = operatorService.getAllGasTariffs();
-        List<HeatTariffDto> heatTar = operatorService.getAllHeatTariffs();
-        model.addAttribute("operDto", operDto);
-        model.addAttribute("elTar", elTar);
-        model.addAttribute("gasTar", gasTar);
-        model.addAttribute("heatTar", heatTar);
-        model.addAttribute("consumer", cons);
-        return "/consumer/edit-consumer";
-    }
-
-    @PostMapping("/editConsumer")
-    public String editConsumer(@RequestParam("operId") Integer operId,
-                               @RequestParam("elTar") Integer elId,
-                               @RequestParam("gasTar") Integer gasId,
-                               @RequestParam("heatTar") Integer heatId,
-                               @ModelAttribute("consumer") ConsumerDto consumerDto) {
-        System.out.println(operId);
-        consumerService.editConsumer(consumerDto, operId, elId, gasId, heatId);
-        return "redirect:/consumer";
-    }
-
-    @GetMapping("/deleteConsumer/{id}")
-    public String deleteConsumer(@PathVariable("id") Integer id) {
-        consumerService.deleteConsumer(id);
-        return "redirect:/consumer";
-    }
-
-    @GetMapping("/addConsumer")
-    public String addConsumer(@ModelAttribute("consumer") ConsumerDto cons, Model model) {
-        List<OperatorDto> operDto = operatorService.getAllOperators();
-        List<ElectricityTariffDto> elTar = operatorService.getAllElTariffs();
-        List<GasTariffDto> gasTar = operatorService.getAllGasTariffs();
-        List<HeatTariffDto> heatTar = operatorService.getAllHeatTariffs();
-        model.addAttribute("operDto", operDto);
-        model.addAttribute("elTar", elTar);
-        model.addAttribute("gasTar", gasTar);
-        model.addAttribute("heatTar", heatTar);
-        return "/consumer/create-consumer";
-    }
-
-    @PostMapping("/createConsumer")
-    public String createConsumer(@RequestParam("operId") Integer operId,
-                                 @RequestParam("elTar") Integer elId,
-                                 @RequestParam("gasTar") Integer gasId,
-                                 @RequestParam("heatTar") Integer heatId,
-                                 @ModelAttribute("consumer") ConsumerDto consumerDto) {
-        consumerService.createConsumer(consumerDto, operId, elId, gasId, heatId);
-        return "redirect:/consumer";
-    }
-
-    @GetMapping("/findConsInfo")
-    public String getConsInfo() {
-        return "/consumer/find-consumer";
-    }
-
-    @GetMapping("/showAllFind")
-    public String showAllFind(@RequestParam("consName") String consName,
-                              @RequestParam("consSurname") String consSurname, Model model) {
-        List<ConsumerDto> allFindConsumers = consumerService.getAllFindConsumers(consName, consSurname);
-        model.addAttribute("consumerDto", allFindConsumers);
-        return "/consumer/find-consumer";
-    }
-
-    @GetMapping("/getInfo/{id}")
-    public String showInfo(@PathVariable("id") Integer id,
-                           Model model) {
-        ConsumerDto consumerById = consumerService.getConsumerById(id);
-        model.addAttribute("cons", consumerById);
-
-        return "/consumer/info-consumer";
-    }
-
-    @GetMapping("/allReport")
-    public String getAllReport(Model model, HttpServletRequest req,
-                               @RequestParam("consId") Integer id) {
-        String mon = getParam(req, "mon");
-        Integer year1 = Integer.parseInt(getParam(req, "year1"));
+    @GetMapping(CREATE_REPORT)
+    public String createReport(Model model, Principal principal) {
+        String name = principal.getName();
+        ConsumerDto consumer = userService.getUserByName(name).getConsumer();
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        if (consumer.getOperator() == null) {
+            model.addAttribute(MESSAGE, MESSAGE1);
+            return REPORT_ERROR;
+        }
+        if (consumer.getElectricityTariff() == null || consumer.getGasTariff() == null
+                || consumer.getHeatTariff() == null) {
+            model.addAttribute(MESSAGE, MESSAGE2);
+            return REPORT_ERROR;
+        }
         Months[] months = Months.values();
-        model.addAttribute("cons", consumerService.getConsumerById(id));
-        model.addAttribute("months", months);
-        model.addAttribute("repList", reportService.getMonthReports(id, mon, year1));
-        model.addAttribute("consId", getParam(req, "consId"));
-        model.addAttribute("id", getParam(req, "id"));
-        model.addAttribute("elCost", getParam(req, "elCost"));
-        model.addAttribute("gasCost", getParam(req, "gasCost"));
-        model.addAttribute("heatCost", getParam(req, "heatCost"));
-        model.addAttribute("elPay", getParam(req, "elPay"));
-        model.addAttribute("gasPay", getParam(req, "gasPay"));
-        model.addAttribute("heatPay", getParam(req, "heatPay"));
-        model.addAttribute("elValue", getParam(req, "elValue"));
-        model.addAttribute("gasValue", getParam(req, "gasValue"));
-        model.addAttribute("heatValue", getParam(req, "heatValue"));
-        model.addAttribute("elCount", getParam(req, "elCount"));
-        model.addAttribute("gasCount", getParam(req, "gasCount"));
-        model.addAttribute("heatCount", getParam(req, "heatCount"));
-        model.addAttribute("IsPaid", getParam(req, "IsPaid"));
-        model.addAttribute("operLabel", getParam(req, "operLabel"));
-        model.addAttribute("year", getParam(req, "year"));
-        model.addAttribute("month", getParam(req, "month"));
-        return "/consumer/info-consumer";
+        model.addAttribute(REP, reportService.getLastMonthReportOfConsumer(consumer.getId()));
+        model.addAttribute(MONTHS, months);
+        model.addAttribute(CONS, consumer);
+        return REPORT_CREATE_REPORT;
     }
 
-    public static String getParam(HttpServletRequest req, String fieldName) {
-        return Optional.ofNullable(req.getParameter(fieldName))
-                .filter(StringUtils::isNotBlank)
-                .orElse(null);
+    @PostMapping(CREATE_REPORT)
+    public String createReport(@RequestParam(ID) Integer consumerId,
+                               @RequestParam(EL_VALUE) BigDecimal elValue,
+                               @RequestParam(GAS_VALUE) BigDecimal gasValue,
+                               @RequestParam(HEAT_VALUE) BigDecimal heatValue,
+                               @RequestParam(MON) String month,
+                               @RequestParam(YEAR) Integer year) {
+        reportService.createReport(consumerId, elValue, gasValue,
+                heatValue, month, year);
+        return REDIRECT_CONSUMER_CREATE_REPORT;
     }
 
+    @GetMapping(ALL_REPORTS)
+    public String getAllReports(Model model, Principal principal) {
+        String name = principal.getName();
+        Integer id = userService.getUserByName(name).getConsumer().getId();
+        model.addAttribute(MONTHS, Months.values());
+        model.addAttribute(CONS_ID, id);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return REPORT_ALL_REPORT;
+    }
+
+    @GetMapping(ALL_REPORT)
+    public String getAllReport(Model model, HttpServletRequest req,
+                               @RequestParam(CONS_ID) Integer id) {
+        String mon = getParam(req, MON);
+        Integer year1 = Integer.parseInt(getParam(req, YEAR_1));
+        Months[] months = Months.values();
+        model.addAttribute(MONTHS, months);
+        model.addAttribute(REP_LIST, reportService.getMonthReports(id, mon, year1));
+        model.addAttribute(CONS_ID, getParam(req, CONS_ID));
+        model.addAttribute(ID, getParam(req, ID));
+        model.addAttribute(EL_COST, getParam(req, EL_COST));
+        model.addAttribute(GAS_COST, getParam(req, GAS_COST));
+        model.addAttribute(HEAT_COST, getParam(req, HEAT_COST));
+        model.addAttribute(EL_PAY, getParam(req, EL_PAY));
+        model.addAttribute(GAS_PAY, getParam(req, GAS_PAY));
+        model.addAttribute(HEAT_PAY, getParam(req, HEAT_PAY));
+        model.addAttribute(EL_VALUE, getParam(req, EL_VALUE));
+        model.addAttribute(GAS_VALUE, getParam(req, GAS_VALUE));
+        model.addAttribute(HEAT_VALUE, getParam(req, HEAT_VALUE));
+        model.addAttribute(EL_COUNT, getParam(req, EL_COUNT));
+        model.addAttribute(GAS_COUNT, getParam(req, GAS_COUNT));
+        model.addAttribute(HEAT_COUNT, getParam(req, HEAT_COUNT));
+        model.addAttribute(IS_PAID, getParam(req, IS_PAID));
+        model.addAttribute(OPER_LABEL, getParam(req, OPER_LABEL));
+        model.addAttribute(YEAR, getParam(req, YEAR));
+        model.addAttribute(MONTH, getParam(req, MONTH));
+        model.addAttribute(TOTAL_PAYMENT, getParam(req, TOTAL_PAYMENT));
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return REPORT_ALL_REPORT;
+    }
 }

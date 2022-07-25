@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
+<div class="container mt-5" style="width: 50%">
+    <h3 class="text-center">Добавить Админа</h3>
+    <form th:method="POST" th:action="@{/admin/createAdmin}" th:object="${admin}">
+        <input type="text" th:field="*{label}" id="label" placeholder="Admin label" class="form-control"><br/>
+        <div th:if="${#fields.hasErrors('label')}" th:errors="*{label}" style="color: red">Ошибка</div>
+        <button type="submit" class="btn btn-success">Добавить</button>
+    </form>
+</div>
+</body>
+</html>
