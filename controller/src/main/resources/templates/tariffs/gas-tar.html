@@ -8,8 +8,23 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
-<div class="container mb-5 mt-3">
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
+<div th:if="${flag == null}" class="container mb-5 mt-3">
+    <h4 class="text-center">Тарифы на газ</h4>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Головная организация</th>
+            <th>Стоимость</th>
+        </tr>
+        <tr th:each="gas : ${gasTar}">
+            <td th:text="${gas.id}"></td>
+            <td th:text="${gas.admin.label}"></td>
+            <td th:text="${gas.tariff}"></td>
+        </tr>
+    </table>
+</div>
+<div th:if="${flag == true}" class="container mb-5 mt-3">
     <h4 class="text-center">Тарифы на газ</h4>
     <table class="table table-bordered table-hover text-center">
         <tr class="table-dark text-dark">
@@ -24,11 +39,14 @@
             <td th:text="${gas.admin.label}"></td>
             <td th:text="${gas.tariff}"></td>
             <td>
-                <a th:href="@{'/tariffs/editTar?id=' + ${gas.id} + '&value=gas'}">Изменить</a>
+                <a th:href="@{/admin/editGasTar/{id}(id=${gas.id})}">Изменить</a>
             </td>
-            <td><a th:href="@{'/operator/add-tariff?id=' + ${gas.id} +'&value=gas'}">Удалить</a></td>
+            <td>
+                <a th:href="@{/admin/deleteGasTar/{id}(id=${gas.id})}">Удалить</a>
+            </td>
         </tr>
     </table>
+    <a th:href="@{/admin/addTar/{value}(value=gas)}" class="btn btn-success" style="width: 160px; float: right">Добавить тариф</a>
 </div>
 </body>
 </html>

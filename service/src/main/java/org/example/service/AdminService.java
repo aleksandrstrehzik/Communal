@@ -1,13 +1,17 @@
 package org.example.service;
 
+import org.example.dto.AdminDto;
 import org.example.entity.Admin;
 
 import java.util.List;
 
 public interface AdminService {
 
-    Admin getAdmin(String label);
+    AdminDto getAdmin(String label);
 
     List<Admin> getAllAdmin();
 
+    void createAdmin(AdminDto admin);
+
+    List<AdminDto> getAllAdmins();
 }

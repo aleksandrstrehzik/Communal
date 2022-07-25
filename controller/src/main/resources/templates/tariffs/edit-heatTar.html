@@ -8,13 +8,13 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5" style="width: 500px">
     <h3 class="text-center">Изменение оператора</h3>
-    <form th:method="POST" th:action="@{/tariffs/editTariff}" th:object="${heatTar}">
+    <form th:method="POST" th:action="@{/admin/editHeatTar}" th:object="${heatTar}">
         <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{admin}">
-        <input type="text" th:field="*{tariff}" th:placeholder="${heatTar.tariff}" class="form-control"><br/>
+        <input type="text" th:field="*{tariff}" th:placeholder="${heatTar.tariff}" class="form-control">
+        <div th:if="${#fields.hasErrors('tariff')}" th:errors="*{tariff}" style="color: red">Ошибка</div><br/>
         <button type="submit" class="btn btn-success">Изменить</button>
     </form>
 </div>

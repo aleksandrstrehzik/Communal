@@ -4,6 +4,7 @@ import org.example.dto.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface OperatorService {
     List<OperatorDto> getAllOperators();
@@ -14,7 +15,7 @@ public interface OperatorService {
 
     void deleteOperator(Integer id);
 
-    void createOperator(String operLabel, String adminLabel);
+    void createOperator(OperatorDto oper, String adminLabel, Integer elTar, Integer gasTar, Integer heatTar);
 
     Page<OperatorDto> findAllPaginated(int pageNumber, String sortField, String sortDirection);
 
@@ -37,4 +38,18 @@ public interface OperatorService {
     void deleteTariffFromOperator(Integer id, String value, String oper);
 
     List<AdminDto> getAllAdmin();
+
+    long getConsumersOfOperator(String operLabel);
+
+    List<ElectricityTariffDto> getElTariffsCreateByAdmin(String adminLabel);
+
+    List<GasTariffDto> getGasTariffsCreateByAdmin(String adminLabel);
+
+    List<HeatTariffDto> getHeatTariffsCreateByAdmin(String adminLabel);
+
+    List<OperatorDto> getAllAdminsOperators(Integer adminId);
+
+    List<ConsumerDto> getConsumersWithOutTariff(String operLabel);
+
+    List<ConsumerDto> getOperatorConsumersList(String operLabel);
 }

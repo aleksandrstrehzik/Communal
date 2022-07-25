@@ -7,12 +7,32 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head"></header>
-<div class="container mt-5" style="width: 300px">
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
+<div class="container mt-5">
     <h3 class="text-center">Добавить Оператора</h3>
-    <form th:method="POST" th:action="@{/operator/add-operator}">
-        <input type="text" name="operLabel" placeholder="Operator label" class="form-control"><br/>
-        <input type="text" name="adminLabel" placeholder="Admin label" class="form-control"><br/>
+    <form th:method="POST" th:action="@{/admin/add-operator}" th:object="${oper}">
+        <input type="text" th:field="*{label}" id="operLabel" placeholder="Operator label" class="form-control"><br/>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <label>Тариф на электричество:</label>
+                <select class="custom-select d-block w-100" name="elTar">
+                    <option th:each="etar : ${elTar}" th:value="${etar.id}" th:text="${etar.tariff}" class="form-control" style="width: 150px"></option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-4" >
+                <label>Тариф на газ:</label>
+                <select class="custom-select d-block w-100" name="gasTar">
+                    <option th:each="gtar : ${gasTar}" th:value="${gtar.id}" th:text="${gtar.tariff}" class="form-control" style="width: 150px"></option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-4">
+                <label>Тариф на теплоту:</label>
+                <select class="custom-select d-block w-100" name="heatTar">
+                    <option th:each="htar : ${heatTar}" th:value="${htar.id}" th:text="${htar.tariff}" class="form-control" style="width: 150px"></option>
+                </select>
+            </div>
+        </div>
+        <input type="hidden" name="adminLabel" th:value="${adminLabel}">
         <button type="submit" class="btn btn-success">Добавить</button>
     </form>
 </div>

@@ -1,17 +1,24 @@
 package org.example.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.dto.ConsumerDto;
 import org.example.dao.*;
-import org.example.dto.OperatorDto;
+import org.example.dto.ConsumerDto;
 import org.example.entity.*;
-import org.example.mapper.*;
+import org.example.mapper.ConsumerMapper;
 import org.example.service.ConsumerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.example.service.impl.MockUtils.CONSUMER;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +30,8 @@ public class ConsumerServiceImpl implements ConsumerService {
     private final ElectricityTariffRepository elRepository;
     private final HeatTariffRepository heatRepository;
     private final GasTariffRepository gasRepository;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
 
     public Page<ConsumerDto> findAllPaginated(int pageNumber, String sortField, String sortDirection) {
@@ -32,18 +41,19 @@ public class ConsumerServiceImpl implements ConsumerService {
         return consumerRepository.findAll(paged).map(consumerMapper::toDto);
     }
 
-    public void editConsumer(Integer id) {
-
-    }
-
     public ConsumerDto getConsumerById(Integer id) {
         return consumerMapper.toDto(consumerRepository.getReferenceById(id));
     }
 
+    @Transactional
     public void deleteConsumer(Integer id) {
+        Consumer o = consumerRepository.getReferenceById(id);
+        o.getMonthReports()
+                .forEach(report -> report.setConsumer(null));
         consumerRepository.deleteById(id);
     }
 
+    @Transactional
     public void createConsumer(ConsumerDto cons, Integer operId, Integer elId,
                                Integer gasId, Integer heatId) {
         Consumer consumer = consumerMapper.toEntity(cons);
@@ -56,8 +66,20 @@ public class ConsumerServiceImpl implements ConsumerService {
         consumer.setGasTariff(gas);
         consumer.setHeatTariff(heat);
         consumerRepository.save(consumer);
+        String s = String.valueOf(consumerRepository.findAll().size());
+        User user = User.builder()
+                .userName(s)
+                .password(new BCryptPasswordEncoder().encode(consumer.getName()))
+                .consumer(consumer)
+                .build();
+        Role role = roleRepository.findByName(CONSUMER);
+        HashSet<Role> roles = new HashSet<>();
+        roles.add(role);
+        user.setRoles(roles);
+        userRepository.save(user);
     }
 
+    @Transactional
     public void editConsumer(ConsumerDto cons, Integer operId, Integer elId,
                              Integer gasId, Integer heatId) {
         Consumer consumer = consumerMapper.toEntity(cons);
@@ -70,5 +92,11 @@ public class ConsumerServiceImpl implements ConsumerService {
         consumer.setGasTariff(gas);
         consumer.setHeatTariff(heat);
         consumerRepository.save(consumer);
+    }
+
+    public List<ConsumerDto> getAllFindConsumers(String name, String surname) {
+        return consumerRepository.findAllByNameAndSurname(name, surname).stream()
+                .map(consumerMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

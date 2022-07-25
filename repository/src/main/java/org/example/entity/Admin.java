@@ -1,8 +1,10 @@
 package org.example.entity;
 
 import lombok.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -36,6 +38,9 @@ public class Admin {
     private Set<Operator> operators = new HashSet<>();
 
     private String label;
+
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL)
+    private User user;
 
     @Override
     public boolean equals(Object o) {

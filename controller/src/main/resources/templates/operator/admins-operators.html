@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="home-page :: header"></header>
+<div class="container mt-5">
+    <h3 class="text-center">Операторы</h3>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Администратор</th>
+            <th>Название</th>
+            <th>Изменить</th>
+            <th>Удалить</th>
+            <th>Узнать больше</th>
+        </tr>
+        <tr th:each="oper : ${operDto}">
+            <td th:text="${oper.id}"></td>
+            <td th:text="${oper.admin.label}"></td>
+            <td th:text="${oper.label}"></td>
+            <td><a th:href="@{/admin/edit-operator/{id}(id=${oper.id})}" class="btn btn-secondary">Изменить</a></td>
+            <td><a th:href="@{/admin/delete/{id}(id=${oper.id})}" class="btn btn-danger">Удалить</a></td>
+            <td><form th:method="GET" th:action="@{/forAll/info-operator}">
+                <input type="hidden" name="operLabel" th:value="${oper.label}">
+                <input type="submit" class="btn" style="width: 80%"/>
+            </form></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

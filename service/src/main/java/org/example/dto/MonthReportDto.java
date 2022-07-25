@@ -10,15 +10,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class MonthReportDto {
 
     private Integer id;
-    private ElectricityTariffDto electricityTariff;
-    private HeatTariffDto heatTariff;
-    private GasTariffDto gasTariff;
+    private Double electricityTariff;
+    private Double gasTariff;
+    private Double heatTariff;
     private Months month;
     private ConsumerDto consumer;
-    private OperatorDto operator;
+    private String operator;
     private Integer year;
     private Boolean IsPaid;
     private BigDecimal volumeOfConsumedGas;
@@ -27,4 +28,8 @@ public class MonthReportDto {
     private BigDecimal paymentForGas;
     private BigDecimal paymentHeatEnergy;
     private BigDecimal paymentElEnergy;
+    private BigDecimal totalElConsumed;
+    private BigDecimal totalGasConsumed;
+    private BigDecimal totalHeatConsumed;
+    private BigDecimal totalPayment;
 }

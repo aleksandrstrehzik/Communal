@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Strezhik">
+        <sql>
+            create table admin
+            (
+                id    int auto_increment
+                    primary key,
+                label varchar(255) null
+            );
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="3" author="Strezhik">
+        <sql>
+            create table electricity_tariff
+            (
+                id                 int auto_increment
+                    primary key,
+                electricity_tariff decimal(19, 2) null,
+                admin_id           int null,
+                constraint FKd2ljh0k5q5t1f7idn3nkskxie
+                    foreign key (admin_id) references admin (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="Strezhik">
+        <sql>
+            create table gas_tariff
+            (
+                id         int auto_increment
+                    primary key,
+                gas_tariff decimal(19, 2) null,
+                admin_id   int null,
+                constraint FKskui6gq0pcbh6au9lj42n686q
+                    foreign key (admin_id) references admin (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="5" author="Strezhik">
+        <sql>
+            create table heat_tariff
+            (
+                id          int auto_increment
+                    primary key,
+                heat_tariff decimal(19, 2) null,
+                admin_id    int null,
+                constraint FKqcay43ftf5felw2ivfipfcgkx
+                    foreign key (admin_id) references admin (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="6" author="Strezhik">
+        <sql>
+            create table operator
+            (
+                id       int auto_increment
+                    primary key,
+                label    varchar(255) null,
+                admin_id int null,
+                constraint FKe4xm8rfqmnsmt614snxaeyt9h
+                    foreign key (admin_id) references admin (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="23" author="Strezhik">
+        <sql>
+            create table myproject.consumer
+            (
+                id                    int auto_increment
+                    primary key,
+                apartment_square      double         null,
+                name                  varchar(255)   null,
+                number_of_residents   int            null,
+                surname               varchar(255)   null,
+                sw                    decimal(19, 2) null,
+                electricity_tariff_id int            null,
+                gas_tariff_id         int            null,
+                heat_tariff_id        int            null,
+                operator_id           int            null,
+                constraint FK3g4eotxhh4c22n9y1iunfb48k
+                    foreign key (operator_id) references myproject.operator (id),
+                constraint FK8d4x93fq66lpxx17dpw4x7u4x
+                    foreign key (gas_tariff_id) references myproject.gas_tariff (id),
+                constraint FKgknvy8ceimxdgqgfdth5qs2qn
+                    foreign key (electricity_tariff_id) references myproject.electricity_tariff (id),
+                constraint FKlb2eweqs2evmq1l2rbqc15lq3
+                    foreign key (heat_tariff_id) references myproject.heat_tariff (id)
+            );
+
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="7" author="Strezhik">
+        <sql>
+            create table message
+            (
+                id          int auto_increment
+                    primary key,
+                message     varchar(255) null,
+                consumer_id int null,
+                operator_id int null,
+                constraint FK2h7vrmoxtk8x6ycknruv2ylfn
+                    foreign key (consumer_id) references consumer (id),
+                constraint FK7jgrsx4d468ipvw1hblvyj9vc
+                    foreign key (operator_id) references operator (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="8" author="Strezhik">
+        <sql>
+            create table month_report
+            (
+                id                                    int auto_increment
+                    primary key,
+                paid                                  bit null,
+                amount_of_electricity_energy_consumed decimal(19, 2) null,
+                amount_of_heat_energy_consumed        decimal(19, 2) null,
+                electricity_tariff                    decimal(19, 2) null,
+                gas_tariff                            decimal(19, 2) null,
+                heat_tariff                           decimal(19, 2) null,
+                month                                 varchar(255) null,
+                operator                              varchar(255) null,
+                pyament_for_electricity_energy        decimal(19, 2) null,
+                pyament_for_gas                       decimal(19, 2) null,
+                pyament_heat_energy                   decimal(19, 2) null,
+                total_el_consumed                     decimal(19, 2) null,
+                total_gas_consumed                    decimal(19, 2) null,
+                total_heat_consumed                   decimal(19, 2) null,
+                total_payment                         decimal(19, 2) null,
+                volume_of_consumed_gas                decimal(19, 2) null,
+                year                                  int null,
+                consumer_id                           int null,
+                constraint FKd8s30bn7rrhjxietjid3bsh7f
+                    foreign key (consumer_id) references myproject.consumer (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="9" author="Strezhik">
+        <sql>
+            create table user
+            (
+                id          int auto_increment
+                    primary key,
+                password    varchar(255) null,
+                user_name   varchar(255) null,
+                admin_id    int null,
+                consumer_id int null,
+                operator_id int null,
+                constraint FK438y97hh6thrtbiy9bqrqht33
+                    foreign key (consumer_id) references consumer (id),
+                constraint FKpi0nc9w2flbfset55lce6a63f
+                    foreign key (admin_id) references admin (id),
+                constraint FKrn9u2kypsbxlqrxmh2dw31via
+                    foreign key (operator_id) references operator (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="10" author="Strezhik">
+        <sql>
+            create table roles
+            (
+                id   int auto_increment
+                    primary key,
+                name varchar(255) null
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="11" author="Strezhik">
+        <sql>
+            create table operators_electricity_tariffs
+            (
+                operator_id           int not null,
+                electricity_tariff_id int not null,
+                primary key (operator_id, electricity_tariff_id),
+                constraint FKa94vkg5ok1m59vk7s5gwu312p
+                    foreign key (electricity_tariff_id) references electricity_tariff (id),
+                constraint FKg0lae53v1nhtljrkbxcletsrp
+                    foreign key (operator_id) references operator (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="12" author="Strezhik">
+        <sql>
+            create table operators_gas_tariffs
+            (
+                operator_id   int not null,
+                gas_tariff_id int not null,
+                primary key (operator_id, gas_tariff_id),
+                constraint FKcdveiqwayj5uj07vf3i1p81nv
+                    foreign key (operator_id) references operator (id),
+                constraint FKnrgs3hs0sl8behuay1p6wet9f
+                    foreign key (gas_tariff_id) references gas_tariff (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="13" author="Strezhik">
+        <sql>
+            create table operators_heat_tariffs
+            (
+                operator_id    int not null,
+                heat_tariff_id int not null,
+                primary key (operator_id, heat_tariff_id),
+                constraint FK3ao96yyumasl3nehutag8aoax
+                    foreign key (operator_id) references operator (id),
+                constraint FK5tvcxsgnix1cnkbya4y82awki
+                    foreign key (heat_tariff_id) references heat_tariff (id)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="14" author="Strezhik">
+        <sql>
+            create table user_role
+            (
+                user_id int not null,
+                role_id int not null,
+                primary key (user_id, role_id),
+                constraint FK859n2jvi8ivhui0rl0esws6o
+                    foreign key (user_id) references user (id),
+                constraint FKt7e7djp752sqn6w22i6ocqy6q
+                    foreign key (role_id) references roles (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
+
+

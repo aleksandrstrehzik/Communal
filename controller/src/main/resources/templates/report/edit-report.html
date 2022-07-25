@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
+<body class="bg-light">
+<div class="container mt-3" >
+    <h3 class="text-center">Изменение потребителя</h3>
+    <br>
+    <br>
+    <form th:method="POST" th:action="@{/operator/editReport}" th:object="${rep}" style="width: 100%">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label> Потребленная Электрическая Энергия:
+                    <input type="text" th:field="*{amountOfElectricityEnergyConsumed}" th:placeholder="${rep.amountOfElectricityEnergyConsumed}" class="form-control">
+                </label>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label> Потребленный газ:
+                    <input type="text" th:field="*{volumeOfConsumedGas}" th:placeholder="${rep.volumeOfConsumedGas}" class="form-control">
+                </label>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label> Потребленная Тепловая Энергия:
+                    <input type="text" th:field="*{amountOfHeatEnergyConsumed}" th:placeholder="${rep.amountOfHeatEnergyConsumed}" class="form-control">
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Тариф на электричество:</label>
+                <select class="custom-select d-block w-100" name="elTar" th:field="*{electricityTariff}">
+                    <option th:each="etar : ${elTar}" th:value="${etar.tariff}" th:text="${etar.tariff}" class="form-control" style="width: 150px"></option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3" >
+                <label>Тариф на газ:</label>
+                <select class="custom-select d-block w-100" name="gasTar" th:field="*{gasTariff}">
+                    <option th:each="gtar : ${gasTar}" th:value="${gtar.tariff}" th:text="${gtar.tariff}" class="form-control" style="width: 150px"></option>
+                </select>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label>Тариф на теплоту:</label>
+                <select class="custom-select d-block w-100" name="heatTar"  th:field="*{heatTariff}">
+                    <option th:each="htar : ${heatTar}" th:value="${htar.tariff}" th:text="${htar.tariff}" class="form-control" style="width: 150px"></option>
+                </select>
+            </div>
+        </div>
+        <input type="hidden" th:field="*{id}" th:value="${rep.id}">
+        <input type="hidden" name="consId"  th:value="${rep.consumer.id}">
+        <input type="hidden" th:field="*{month}" th:value="${rep.month}">
+        <input type="hidden" th:field="*{operator}" th:value="${rep.operator}">
+        <input type="hidden" th:field="*{year}" th:value="${rep.year}">
+        <input type="hidden" th:field="*{totalPayment}" th:value="${rep.totalPayment}">
+        <button type="submit" class="btn btn-success" style="width: 20%; float: right;">Изменить</button>
+    </form>
+</div>
+</body>
+</html>

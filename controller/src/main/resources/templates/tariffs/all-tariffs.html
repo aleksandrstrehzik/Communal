@@ -8,7 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5">
     <div class="row mb-3">
         <div class="col-md-4">
@@ -25,7 +25,7 @@
                         <td th:text="${el.admin.label}"></td>
                         <td th:text="${el.tariff}"></td>
                         <td>
-                            <a th:href="@{'/operator/add-tariff?id=' + ${el.id} +'&value=el'}">Добавить</a>
+                            <a th:href="@{'/admin/add-tariff?id=' + ${el.id} +'&value=el'}">Добавить</a>
                         </td>
                     </tr>
                 </table>
@@ -43,7 +43,7 @@
                         <td th:text="${gas.id}"></td>
                         <td th:text="${gas.admin.label}"></td>
                         <td th:text="${gas.tariff}"></td>
-                        <td><a th:href="@{'/operator/add-tariff?id=' + ${gas.id} +'&value=gas'}">Добавить</a></td>
+                        <td><a th:href="@{'/admin/add-tariff?id=' + ${gas.id} +'&value=gas'}">Добавить</a></td>
                     </tr>
                 </table>
         </div>
@@ -60,7 +60,7 @@
                     <td th:text="${heat.id}"></td>
                     <td th:text="${heat.admin.label}"></td>
                     <td th:text="${heat.tariff}"></td>
-                    <td><a th:href="@{'/operator/add-tariff?id=' + ${heat.id} +'&value=heat'}">Добавить</a></td>
+                    <td><a th:href="@{'/admin/add-tariff?id=' + ${heat.id} +'&value=heat'}">Добавить</a></td>
                 </tr>
             </table>
         </div>

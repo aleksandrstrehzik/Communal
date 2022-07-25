@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="home-page :: header"></header>
+<div class="container mt-5">
+    <h3 class="text-center">Администраторы</h3>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Администратор</th>
+        </tr>
+        <tr th:each="ad : ${adminDto}">
+            <td th:text="${ad.id}"></td>
+            <td th:text="${ad.label}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

@@ -17,9 +17,13 @@ import org.example.mapper.GasTariffMapper;
 import org.example.mapper.HeatTariffMapper;
 import org.example.service.TariffsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.example.service.impl.MockUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +55,7 @@ public class TariffServiceImpl implements TariffsService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void deleteElTar(Integer id) {
         ElectricityTariff el = elRepository.getReferenceById(id);
         el.getConsumers()
@@ -58,12 +63,14 @@ public class TariffServiceImpl implements TariffsService {
         elRepository.deleteById(id);
     }
 
+    @Transactional
     public void deleteGasTar(Integer id) {
         GasTariff gas = gasRepository.getReferenceById(id);
         gas.getConsumers().forEach(consumer -> consumer.setGasTariff(null));
         gasRepository.deleteById(id);
     }
 
+    @Transactional
     public void deleteHeatTar(Integer id) {
         HeatTariff heat = heatRepository.getReferenceById(id);
         heat.getConsumers().forEach(consumer -> consumer.setHeatTariff(null));
@@ -82,6 +89,7 @@ public class TariffServiceImpl implements TariffsService {
         return heatTariffMapper.toDto(heatRepository.getReferenceById(id));
     }
 
+    @Transactional
     public void updateElTar(ElectricityTariffDto el, Integer adminId) {
         Admin admin = adminRepository.getReferenceById(adminId);
         ElectricityTariff electricityTariff = electricityTariffMapper.toEntity(el);
@@ -89,13 +97,47 @@ public class TariffServiceImpl implements TariffsService {
         elRepository.save(electricityTariff);
     }
 
-    public void updateGasTar(GasTariffDto gas) {
+    @Transactional
+    public void updateGasTar(GasTariffDto gas, Integer adminId) {
+        Admin admin = adminRepository.getReferenceById(adminId);
         GasTariff gasTariff = gasTariffMapper.toEntity(gas);
+        gasTariff.setAdmin(admin);
         gasRepository.save(gasTariff);
     }
 
-    public void updateHeatTar(HeatTariffDto heat) {
+    @Transactional
+    public void updateHeatTar(HeatTariffDto heat, Integer adminId) {
+        Admin admin = adminRepository.getReferenceById(adminId);
         HeatTariff heatTariff = heatTariffMapper.toEntity(heat);
+        heatTariff.setAdmin(admin);
         heatRepository.save(heatTariff);
+    }
+
+    @Transactional
+    public void createTariff(Integer adminId, String value, BigDecimal tariff) {
+        Admin admin = adminRepository.getReferenceById(adminId);
+        switch (value){
+            case EL:
+                ElectricityTariff el = ElectricityTariff.builder()
+                        .admin(admin)
+                        .tariff(tariff)
+                        .build();
+                elRepository.save(el);
+                break;
+            case GAS:
+                GasTariff gas = GasTariff.builder()
+                        .admin(admin)
+                        .tariff(tariff)
+                        .build();
+                gasRepository.save(gas);
+                break;
+            case HEAT:
+                HeatTariff heat = HeatTariff.builder()
+                        .admin(admin)
+                        .tariff(tariff)
+                        .build();
+                heatRepository.save(heat);
+                break;
+        }
     }
 }

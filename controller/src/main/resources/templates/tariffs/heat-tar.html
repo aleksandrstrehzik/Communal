@@ -8,8 +8,23 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head" style="position: relative; z-index: 9999;"></header>
-<div class="container mb-5 mt-3">
+<header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
+<div th:if="${flag == null}" class="container mb-5 mt-3">
+    <h4 class="text-center">Тарифы на теплоту</h4>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Головная организация</th>
+            <th>Стоимость</th>
+        </tr>
+        <tr th:each="heat : ${heatTar}">
+            <td th:text="${heat.id}"></td>
+            <td th:text="${heat.admin.label}"></td>
+            <td th:text="${heat.tariff}"></td>
+         </tr>
+    </table>
+</div>
+<div th:if="${flag == true}" class="container mb-5 mt-3">
     <h4 class="text-center">Тарифы на теплоту</h4>
     <table class="table table-bordered table-hover text-center">
         <tr class="table-dark text-dark">
@@ -24,11 +39,14 @@
             <td th:text="${heat.admin.label}"></td>
             <td th:text="${heat.tariff}"></td>
             <td>
-                <a th:href="@{'/tariffs/editTar?id=' + ${heat.id} + '&value=heat'}">Изменить</a>
+                <a th:href="@{/admin/editHeatTar/{id}(id=${heat.id})}">Изменить</a>
             </td>
-            <td><a th:href="@{'/operator/add-tariff?id=' + ${heat.id} +'&value=heat'}">Удалить</a></td>
+            <td>
+                <a th:href="@{/admin/deleteHeatTar/{id}(id=${heat.id})}">Удалить</a>
+            </td>
         </tr>
     </table>
+    <a th:href="@{/admin/addTar/{value}(value=heat)}" class="btn btn-success" style="width: 160px; float: right">Добавить тариф</a>
 </div>
 </body>
 </html>

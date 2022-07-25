@@ -7,6 +7,17 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
 </head>
 <body>
-<header th:insert="menu :: head"></header>
+<div th:if="${role == 1}" th:fragment="header">
+    <header th:insert="menu :: admin_head"></header>
+</div>
+<div th:if="${role == 2}" th:fragment="header">
+    <header th:insert="menu :: operator_head"></header>
+</div>
+<div th:if="${role == 3}" th:fragment="header">
+    <header th:insert="menu :: consumer_head"></header>
+</div>
+<div th:if="${role == null}" th:fragment="header">
+    <header th:insert="menu :: head"></header>
+</div>
 </body>
 </html>
