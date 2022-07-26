@@ -32,10 +32,6 @@ public class AdminServiceImpl implements AdminService {
         return adminMapper.toDto(adminRepository.findAdminByLabel(label));
     }
 
-    public List<Admin> getAllAdmin() {
-        return adminRepository.findAll();
-    }
-
     @Transactional
     public void createAdmin(AdminDto adminDto) {
         if (adminRepository.findAdminByLabel(adminDto.getLabel()) != null) {

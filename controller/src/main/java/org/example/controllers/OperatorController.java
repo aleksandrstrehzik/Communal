@@ -26,6 +26,7 @@ import static org.example.controllers.MockUtils.*;
 @RequiredArgsConstructor
 public class OperatorController {
 
+    public static final String GET_CONS_WITH_OUT_TARIFFS = "/getConsWithOutTariffs";
     private final OperatorService operatorService;
     private final ConsumerService consumerService;
     private final ReportService reportService;
@@ -103,6 +104,11 @@ public class OperatorController {
         List<ElectricityTariffDto> elTar = operatorService.electricityTariffsOfOperator(name);
         List<GasTariffDto> gasTar = operatorService.gasTariffsOfOperator(name);
         List<HeatTariffDto> heatTar = operatorService.heatTariffsOfOperator(name);
+        if (elTar.isEmpty() || gasTar.isEmpty() || heatTar.isEmpty()) {
+            model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+            model.addAttribute(MESSAGE, MESSAGE3);
+            return "/operator/error";
+        }
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
         model.addAttribute(HEAT_TAR, heatTar);
@@ -226,6 +232,15 @@ public class OperatorController {
     public String findOpCons(Model model) {
         String currentUserName = session.getAttribute(CURRENT_USER_NAME).toString();
         List<ConsumerDto> list = operatorService.getOperatorConsumersList(currentUserName);
+        model.addAttribute(CONSUMER_DTO, list);
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return CONSUMER_OPERATOR_CONSUMERS;
+    }
+
+    @GetMapping("/getConsWithOutTariffs")
+    public String getConsWithOutTariffs(Model model) {
+        String currentUserName = session.getAttribute(CURRENT_USER_NAME).toString();
+        List<ConsumerDto> list = operatorService.getConsumersWithOutTariff(currentUserName);
         model.addAttribute(CONSUMER_DTO, list);
         model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
         return CONSUMER_OPERATOR_CONSUMERS;
