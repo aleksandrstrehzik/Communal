@@ -22,6 +22,7 @@
                     <div th:if="${conWithOut} != null">
                         <h5>Количество подключенных без тарифа</h5>
                         <h4 th:text="${conWithOut.size}"></h4>
+                        <a th:if="${flag2} != null" th:href="@{/operator/getConsWithOutTariffs}">Исправить</a>
                     </div>
                 </div>
                 <img th:src="@{/images/minsk.png}" width="100px" height="100px">

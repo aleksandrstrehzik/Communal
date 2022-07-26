@@ -153,6 +153,7 @@ public class MockUtils {
     public static final String FIND_OP_CONS = "/findOpCons";
     public static final String CONSUMER_OPERATOR_CONSUMERS = "/consumer/operator-consumers";
     public static final String OPERATOR_ = "/operator";
+    public static final String FLAG_2 = "flag2";
 
     public static String getParam(HttpServletRequest req, String fieldName) {
         return Optional.ofNullable(req.getParameter(fieldName))

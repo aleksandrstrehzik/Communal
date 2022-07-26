@@ -178,7 +178,110 @@
         </sql>
     </changeSet>
 
+    <changeSet id="39" author="Strezhik">
+        <sql>
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('1', '1');
 
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('1', '2');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('1', '3');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('2', '1');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('2', '2');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('2', '3');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('3', '4');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('3', '5');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('4', '4');
+
+            INSERT INTO operators_electricity_tariffs (operator_id, electricity_tariff_id)
+            VALUES ('4', '6');
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="40" author="Strezhik">
+        <sql>
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('1', '1');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('1', '2');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('1', '3');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('2', '1');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('2', '2');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('2', '3');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('3', '4');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('3', '5');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('4', '4');
+
+            INSERT INTO operators_gas_tariffs (operator_id, gas_tariff_id)
+            VALUES ('4', '6');
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="41" author="Strezhik">
+        <sql>
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('1', '1');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('1', '2');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('1', '3');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('2', '1');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('2', '2');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('2', '3');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('3', '4');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('3', '5');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('4', '4');
+
+            INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
+            VALUES ('4', '6');
+
+        </sql>
+    </changeSet>
 </databaseChangeLog>
 
 

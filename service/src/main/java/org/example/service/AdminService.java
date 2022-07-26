@@ -9,8 +9,6 @@ public interface AdminService {
 
     AdminDto getAdmin(String label);
 
-    List<Admin> getAllAdmin();
-
     void createAdmin(AdminDto admin);
 
     List<AdminDto> getAllAdmins();
