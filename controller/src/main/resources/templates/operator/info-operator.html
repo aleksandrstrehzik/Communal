@@ -42,7 +42,7 @@
                             <td th:text="${el.id}"></td>
                             <td th:text="${el.admin.label}"></td>
                             <td th:text="${el.tariff}"></td>
-                            <td th:if="${flag == true}"><a th:href="@{'/admin/deleteTariff?id=' + ${el.id} +'&value=el'}">Удалить</a></td>
+                            <td th:if="${flag == true}"><a th:href="@{'/admin/deleteTariff?id=' + ${el.id} +'&value=el&operLabel=' + ${operator.label}}">Удалить</a></td>
                         </tr>
                 </table>
                 <h4 class="text-center">Тарифы на газ</h4>

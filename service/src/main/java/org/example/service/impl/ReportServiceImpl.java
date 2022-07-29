@@ -8,7 +8,7 @@ import org.example.entity.Consumer;
 import org.example.entity.MonthReport;
 import org.example.entity.enums.Months;
 import org.example.mapper.MonthReportMapper;
-import org.example.service.ReportService;
+import org.example.service.interfaces.ReportService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

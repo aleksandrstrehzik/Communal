@@ -2,11 +2,10 @@ package org.example.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.*;
-import org.example.service.AdminService;
-import org.example.service.OperatorService;
-import org.example.service.TariffsService;
-import org.example.service.UserService;
-import org.example.service.impl.UserDetailsServiceImpl;
+import org.example.service.interfaces.AdminService;
+import org.example.service.interfaces.OperatorService;
+import org.example.service.interfaces.TariffsService;
+import org.example.service.interfaces.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -117,10 +116,10 @@ public class AdminController {
 
     @GetMapping(DELETE_TARIFF)
     public String deleteTariffFromOperator(@RequestParam(ID) Integer id,
-                                           @RequestParam(VALUE) String value) {
-        String name = (String) session.getAttribute(NAME);
-        operatorService.deleteTariffFromOperator(id, value, name);
-        return REDIRECT_FOR_ALL_INFO_OPERATOR_OPER_LABEL + name;
+                                           @RequestParam(VALUE) String value,
+                                           @RequestParam(OPER_LABEL) String operLabel) {
+        operatorService.deleteTariffFromOperator(id, value, operLabel);
+        return REDIRECT_FOR_ALL_INFO_OPERATOR_OPER_LABEL + operLabel;
     }
 
     @GetMapping(DELETE_EL_TAR_ID)

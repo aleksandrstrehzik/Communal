@@ -9,7 +9,7 @@ import org.example.entity.Admin;
 import org.example.entity.Role;
 import org.example.entity.User;
 import org.example.mapper.AdminMapper;
-import org.example.service.AdminService;
+import org.example.service.interfaces.AdminService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +45,7 @@ public class AdminServiceImpl implements AdminService {
                 .admin(save)
                 .build();
         Role role = roleRepository.findByName(ADMIN);
-        HashSet<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
+        user.getRoles().add(role);
         userRepository.save(user);
     }
 

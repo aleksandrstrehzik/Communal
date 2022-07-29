@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.service.interfaces;
 
 import org.example.dto.ElectricityTariffDto;
 import org.example.dto.GasTariffDto;

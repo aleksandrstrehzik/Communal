@@ -2,9 +2,9 @@ package org.example.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.*;
-import org.example.service.AdminService;
-import org.example.service.OperatorService;
-import org.example.service.TariffsService;
+import org.example.service.interfaces.AdminService;
+import org.example.service.interfaces.OperatorService;
+import org.example.service.interfaces.TariffsService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

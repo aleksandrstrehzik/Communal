@@ -5,7 +5,7 @@ import org.example.dao.*;
 import org.example.dto.ConsumerDto;
 import org.example.entity.*;
 import org.example.mapper.ConsumerMapper;
-import org.example.service.ConsumerService;
+import org.example.service.interfaces.ConsumerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,9 +73,7 @@ public class ConsumerServiceImpl implements ConsumerService {
                 .consumer(consumer)
                 .build();
         Role role = roleRepository.findByName(CONSUMER);
-        HashSet<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
+        user.getRoles().add(role);
         userRepository.save(user);
     }
 

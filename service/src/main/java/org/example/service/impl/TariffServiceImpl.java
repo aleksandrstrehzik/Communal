@@ -15,7 +15,7 @@ import org.example.entity.HeatTariff;
 import org.example.mapper.ElectricityTariffMapper;
 import org.example.mapper.GasTariffMapper;
 import org.example.mapper.HeatTariffMapper;
-import org.example.service.TariffsService;
+import org.example.service.interfaces.TariffsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -5,7 +5,7 @@ import org.example.dao.*;
 import org.example.dto.*;
 import org.example.entity.*;
 import org.example.mapper.*;
-import org.example.service.OperatorService;
+import org.example.service.interfaces.OperatorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -76,26 +76,23 @@ public class OperatorServiceImpl implements OperatorService {
 
     @Transactional
     public void createOperator(OperatorDto oper, String adminLabel, Integer elTar, Integer gasTar, Integer heatTar) {
-        if (operatorRepository.findOperatorByLabel(oper.getLabel()) != null) {
-            return;
+        if (operatorRepository.findOperatorByLabel(oper.getLabel()) == null) {
+            Admin adminByLabel = adminRepository.findAdminByLabel(adminLabel);
+            Operator build = operatorMapper.toEntity(oper);
+            build.setAdmin(adminByLabel);
+            build.getElectricityTariffs().add(elRepository.getReferenceById(elTar));
+            build.getGasTariffs().add(gasRepository.getReferenceById(gasTar));
+            build.getHeatTariffs().add(heatRepository.getReferenceById(heatTar));
+            operatorRepository.save(build);
+            User user = User.builder()
+                    .operator(build)
+                    .password(new BCryptPasswordEncoder().encode(build.getLabel()))
+                    .userName(build.getLabel())
+                    .build();
+            Role role = roleRepository.findByName(OPERATOR);
+            user.getRoles().add(role);
+            userRepository.save(user);
         }
-        Admin adminByLabel = adminRepository.findAdminByLabel(adminLabel);
-        Operator build = operatorMapper.toEntity(oper);
-        build.setAdmin(adminByLabel);
-        build.getElectricityTariffs().add(elRepository.getReferenceById(elTar));
-        build.getGasTariffs().add(gasRepository.getReferenceById(gasTar));
-        build.getHeatTariffs().add(heatRepository.getReferenceById(heatTar));
-        operatorRepository.save(build);
-        User user = User.builder()
-                .operator(build)
-                .password(new BCryptPasswordEncoder().encode(build.getLabel()))
-                .userName(build.getLabel())
-                .build();
-        Role role = roleRepository.findByName(OPERATOR);
-        HashSet<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
-        userRepository.save(user);
     }
 
     public Page<OperatorDto> findAllPaginated(int pageNumber, String sortField, String sortDirection) {
