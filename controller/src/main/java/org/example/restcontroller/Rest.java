@@ -1,8 +1,8 @@
-package org.example.restController;
+package org.example.restcontroller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.AdminDto;
-import org.example.service.AdminService;
+import org.example.service.interfaces.AdminService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

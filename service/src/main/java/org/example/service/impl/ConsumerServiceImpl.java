@@ -5,16 +5,15 @@ import org.example.dao.*;
 import org.example.dto.ConsumerDto;
 import org.example.entity.*;
 import org.example.mapper.ConsumerMapper;
-import org.example.service.ConsumerService;
+import org.example.service.interfaces.ConsumerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +31,7 @@ public class ConsumerServiceImpl implements ConsumerService {
     private final GasTariffRepository gasRepository;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
 
     public Page<ConsumerDto> findAllPaginated(int pageNumber, String sortField, String sortDirection) {
@@ -69,13 +69,11 @@ public class ConsumerServiceImpl implements ConsumerService {
         String s = String.valueOf(consumerRepository.findAll().size());
         User user = User.builder()
                 .userName(s)
-                .password(new BCryptPasswordEncoder().encode(consumer.getName()))
+                .password(bCryptPasswordEncoder.encode(consumer.getName()))
                 .consumer(consumer)
                 .build();
         Role role = roleRepository.findByName(CONSUMER);
-        HashSet<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
+        user.getRoles().add(role);
         userRepository.save(user);
     }
 

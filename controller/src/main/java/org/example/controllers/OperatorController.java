@@ -2,11 +2,10 @@ package org.example.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.*;
-import org.example.entity.enums.Months;
-import org.example.service.ConsumerService;
-import org.example.service.OperatorService;
-import org.example.service.ReportService;
-import org.example.service.UserService;
+import org.example.service.interfaces.ConsumerService;
+import org.example.service.interfaces.OperatorService;
+import org.example.service.interfaces.ReportService;
+import org.example.service.interfaces.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.Month;
 import java.util.List;
 
 import static org.example.controllers.MockUtils.*;
@@ -66,7 +66,7 @@ public class OperatorController {
         if (elTar.isEmpty() || gasTar.isEmpty() || heatTar.isEmpty()) {
             model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
             model.addAttribute(MESSAGE, MESSAGE3);
-            return "/operator/error";
+            return OPERATOR_ERROR;
         }
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
@@ -107,7 +107,7 @@ public class OperatorController {
         if (elTar.isEmpty() || gasTar.isEmpty() || heatTar.isEmpty()) {
             model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
             model.addAttribute(MESSAGE, MESSAGE3);
-            return "/operator/error";
+            return OPERATOR_ERROR;
         }
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
@@ -125,7 +125,7 @@ public class OperatorController {
                                BindingResult bindingResult, Model model) {
         String name = session.getAttribute(CURRENT_USER_NAME).toString();
         Integer operId = operatorService.getOperatorByLabel(name).getId();
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             ConsumerDto cons = consumerService.getConsumerById(consumerDto.getId());
             List<ElectricityTariffDto> elTar = operatorService.electricityTariffsOfOperator(name);
             List<GasTariffDto> gasTar = operatorService.gasTariffsOfOperator(name);
@@ -169,6 +169,11 @@ public class OperatorController {
         ConsumerDto consumerById = consumerService.getConsumerById(id);
         model.addAttribute(CONS, consumerById);
         model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        if (consumerById.getOperator() != null &&
+                consumerById.getOperator().equals(userDetailsService.getUserByName(currentUserName).getOperator()) &&
+                reportService.getLastMonthReportOfConsumer(id) != null) {
+            model.addAttribute(FLAG, true);
+        }
         return CONSUMER_INFO_CONSUMER;
     }
 
@@ -177,15 +182,15 @@ public class OperatorController {
                                @RequestParam(CONS_ID) Integer id) {
         String mon = getParam(req, MON);
         Integer year1 = Integer.parseInt(getParam(req, YEAR_1));
-        Months[] months = Months.values();
         String currentUserName = session.getAttribute(CURRENT_USER_NAME).toString();
         ConsumerDto consumerById = consumerService.getConsumerById(id);
         if (consumerById.getOperator() != null &&
-                consumerById.getOperator().equals(userDetailsService.getUserByName(currentUserName).getOperator())) {
+                consumerById.getOperator().equals(userDetailsService.getUserByName(currentUserName).getOperator()) &&
+                reportService.getLastMonthReportOfConsumer(id) != null) {
             model.addAttribute(FLAG, true);
         }
         model.addAttribute(CONS, consumerById);
-        model.addAttribute(MONTHS, months);
+        model.addAttribute(MONTHS, reportService.monthList());
         model.addAttribute(REP_LIST, reportService.getMonthReports(id, mon, year1));
         model.addAttribute(CONS_ID, getParam(req, CONS_ID));
         model.addAttribute(ID, getParam(req, ID));
@@ -211,9 +216,9 @@ public class OperatorController {
     }
 
     @GetMapping(EDIT_REPORT_ID)
-    public String editReport(@PathVariable(ID) Integer id, Model model) {
-        String operator = reportService.getMonthReport(id).getOperator();
-        model.addAttribute(REP, reportService.getMonthReport(id));
+    public String editReport(@PathVariable(ID) Integer consId, Model model) {
+        String operator = consumerService.getConsumerById(consId).getOperator().getLabel();
+        model.addAttribute(REP, reportService.getLastMonthReportOfConsumer(consId));
         model.addAttribute(EL_TAR, operatorService.electricityTariffsOfOperator(operator));
         model.addAttribute(GAS_TAR, operatorService.gasTariffsOfOperator(operator));
         model.addAttribute(HEAT_TAR, operatorService.heatTariffsOfOperator(operator));
@@ -237,7 +242,7 @@ public class OperatorController {
         return CONSUMER_OPERATOR_CONSUMERS;
     }
 
-    @GetMapping("/getConsWithOutTariffs")
+    @GetMapping(GET_CONS_WITH_OUT_TARIFFS)
     public String getConsWithOutTariffs(Model model) {
         String currentUserName = session.getAttribute(CURRENT_USER_NAME).toString();
         List<ConsumerDto> list = operatorService.getConsumersWithOutTariff(currentUserName);

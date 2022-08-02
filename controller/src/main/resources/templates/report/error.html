@@ -14,12 +14,22 @@
 <br>
 <br>
 
-<div>
+<div th:if="${monthsList} == null">
     <main role="main" class="inner cover " style="width: 50%; margin-left: auto; margin-right: auto">
         <h1 class="cover-heading text-center">Произошла ошибка</h1>
         <p class="lead text-center" th:text="${message}"></p>
         <p class="lead">
             <a href="/" class="btn btn-lg btn-secondary">Вернуться на главную</a>
+        </p>
+    </main>
+</div>
+<div th:if="${monthsList} != null">
+    <main role="main" class="inner cover " style="width: 50%; margin-left: auto; margin-right: auto">
+        <h1 class="cover-heading text-center">Произошла ошибка</h1>
+        <p class="lead text-center" th:text="${message}"></p>
+        <p class="lead text-center" th:each="ma : ${monthsList}" th:text="${ma}"></p>
+        <p class="lead">
+            <a th:href="@{/consumer/createReport}" class="btn btn-lg btn-secondary">Попробовать снова</a>
         </p>
     </main>
 </div>

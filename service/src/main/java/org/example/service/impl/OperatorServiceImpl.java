@@ -5,16 +5,15 @@ import org.example.dao.*;
 import org.example.dto.*;
 import org.example.entity.*;
 import org.example.mapper.*;
-import org.example.service.OperatorService;
+import org.example.service.interfaces.OperatorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,6 +37,7 @@ public class OperatorServiceImpl implements OperatorService {
     private final GasTariffRepository gasRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public List<OperatorDto> getAllOperators() {
@@ -51,24 +51,27 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Transactional
-    public void updateOperator(OperatorDto dto, Integer adminId) {
-        Admin admin = adminRepository.getReferenceById(adminId);
-        String old = operatorRepository.getReferenceById(dto.getId()).getLabel();
+    public void updateOperator(OperatorDto dto) {
         String future = dto.getLabel();
-        if (operatorRepository.findOperatorByLabel(future) != null)
-            return;
-        User byUserName = userRepository.findByUserName(old);
-        byUserName.setUserName(future);
-        userRepository.save(byUserName);
-        Operator operator = operatorMapper.toEntity(dto);
-        operator.setAdmin(admin);
-        operatorRepository.save(operator);
+        if (operatorRepository.findOperatorByLabel(future) == null) {
+            String old = operatorRepository.getReferenceById(dto.getId()).getLabel();
+            User byUserName = userRepository.findByUserName(old);
+            byUserName.setUserName(future);
+            userRepository.save(byUserName);
+            Operator operator = operatorRepository.getReferenceById(dto.getId());
+            operator.setLabel(future);
+            operatorRepository.save(operator);
+        }
     }
 
     @Transactional
     public void deleteOperator(Integer id) {
         Operator o = operatorRepository.getReferenceById(id);
-        userRepository.findByUserName(o.getLabel()).setOperator(null);
+        User byUserName = userRepository.findByUserName(o.getLabel());
+        userRepository.deleteUserRole(byUserName.getId());
+        byUserName.setOperator(null);
+        o.setUser(null);
+        userRepository.deleteUserByUserName(o.getLabel());
         o.getConsumers()
                 .forEach(consumer -> consumer.setOperator(null));
         operatorRepository.deleteById(id);
@@ -76,26 +79,23 @@ public class OperatorServiceImpl implements OperatorService {
 
     @Transactional
     public void createOperator(OperatorDto oper, String adminLabel, Integer elTar, Integer gasTar, Integer heatTar) {
-        if (operatorRepository.findOperatorByLabel(oper.getLabel()) != null) {
-            return;
+        if (operatorRepository.findOperatorByLabel(oper.getLabel()) == null) {
+            Admin adminByLabel = adminRepository.findAdminByLabel(adminLabel);
+            Operator build = operatorMapper.toEntity(oper);
+            build.setAdmin(adminByLabel);
+            build.getElectricityTariffs().add(elRepository.getReferenceById(elTar));
+            build.getGasTariffs().add(gasRepository.getReferenceById(gasTar));
+            build.getHeatTariffs().add(heatRepository.getReferenceById(heatTar));
+            operatorRepository.save(build);
+            User user = User.builder()
+                    .operator(build)
+                    .password(bCryptPasswordEncoder.encode(build.getLabel()))
+                    .userName(build.getLabel())
+                    .build();
+            Role role = roleRepository.findByName(OPERATOR);
+            user.getRoles().add(role);
+            userRepository.save(user);
         }
-        Admin adminByLabel = adminRepository.findAdminByLabel(adminLabel);
-        Operator build = operatorMapper.toEntity(oper);
-        build.setAdmin(adminByLabel);
-        build.getElectricityTariffs().add(elRepository.getReferenceById(elTar));
-        build.getGasTariffs().add(gasRepository.getReferenceById(gasTar));
-        build.getHeatTariffs().add(heatRepository.getReferenceById(heatTar));
-        operatorRepository.save(build);
-        User user = User.builder()
-                .operator(build)
-                .password(new BCryptPasswordEncoder().encode(build.getLabel()))
-                .userName(build.getLabel())
-                .build();
-        Role role = roleRepository.findByName(OPERATOR);
-        HashSet<Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRoles(roles);
-        userRepository.save(user);
     }
 
     public Page<OperatorDto> findAllPaginated(int pageNumber, String sortField, String sortDirection) {
@@ -242,6 +242,24 @@ public class OperatorServiceImpl implements OperatorService {
     public List<ConsumerDto> getOperatorConsumersList(String operLabel) {
         return operatorRepository.findOperatorByLabel(operLabel).getConsumers().stream()
                 .map(consumerMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ElectricityTariffDto> getElTariffsWitchOperatorDontHave(Integer adminId, Integer operId) {
+        return elRepository.getElectricityTariffWhichOperatorDontHave(adminId, operId).stream()
+                .map(electricityTariffMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<GasTariffDto> getGasTariffsWitchOperatorDontHave(Integer adminId, Integer operId) {
+        return gasRepository.getGasTariffWhichOperatorDontHave(adminId, operId).stream()
+                .map(gasTariffMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<HeatTariffDto> getHeatTariffsWitchOperatorDontHave(Integer adminId, Integer operId) {
+        return heatRepository.getHeatTariffWhichOperatorDontHave(adminId, operId).stream()
+                .map(heatTariffMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

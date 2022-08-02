@@ -28,7 +28,6 @@ public class MockUtils {
     public static final String DELETE_ID = "/delete/{id}";
     public static final String ALL_ADMIN_OPERATORS = "/allAdmin-operators";
     public static final String OPER_DTO = "operDto";
-    public static final String ALL_TARIFF_AD_LABEL = "/all-tariff/{adLabel}";
     public static final String AD_LABEL = "adLabel";
     public static final String ADD_TARIFF = "/add-tariff";
     public static final String VALUE = "value";
@@ -115,6 +114,7 @@ public class MockUtils {
     public static final String INFO_OPERATOR = "/info-operator";
     public static final String FOR_ALL = "forAll";
     public static final String FLAG = "flag";
+    public static final String OPERATOR_ERROR = "/operator/error";
     public static final String CONSUMER1 = "consumer";
     public static final String OPERATOR1 = "operator";
     public static final String CON_WITH_OUT = "conWithOut";

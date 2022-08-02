@@ -2,11 +2,10 @@ package org.example.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.*;
-import org.example.service.AdminService;
-import org.example.service.OperatorService;
-import org.example.service.TariffsService;
-import org.example.service.UserService;
-import org.example.service.impl.UserDetailsServiceImpl;
+import org.example.service.interfaces.AdminService;
+import org.example.service.interfaces.OperatorService;
+import org.example.service.interfaces.TariffsService;
+import org.example.service.interfaces.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +24,9 @@ import static org.example.controllers.MockUtils.*;
 @RequiredArgsConstructor
 public class AdminController {
 
+    public static final String ALL_TARIFF = "/all-tariff";
+    public static final String OPERATOR_ADMINS_OPERATORS = "/operator/admins-operators";
+    public static final String MESSAGE4 = "Создайте тарифам по всем видам отпускаемой энергии";
     private final OperatorService operatorService;
     private final UserService userService;
     private final TariffsService tariffsService;
@@ -38,6 +40,11 @@ public class AdminController {
         List<ElectricityTariffDto> elTar = operatorService.getElTariffsCreateByAdmin(label);
         List<GasTariffDto> gasTar = operatorService.getGasTariffsCreateByAdmin(label);
         List<HeatTariffDto> heatTar = operatorService.getHeatTariffsCreateByAdmin(label);
+        if (elTar.isEmpty() || gasTar.isEmpty() || heatTar.isEmpty()) {
+            model.addAttribute(MESSAGE, MESSAGE4);
+            model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+            return OPERATOR_ERROR;
+        }
         model.addAttribute(ADMIN_LABEL, label);
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
@@ -73,14 +80,13 @@ public class AdminController {
             model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
             return OPERATOR_EDIT_OPERATOR;
         }
-        Integer id = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
-        operatorService.updateOperator(operator, id);
+        operatorService.updateOperator(operator);
         return REDIRECT_ADMIN_ALL_ADMIN_OPERATORS;
     }
 
 
     @GetMapping(DELETE_ID)
-    public String delete(@PathVariable(ID) Integer id) {
+    public String deleteOperator(@PathVariable(ID) Integer id) {
         operatorService.deleteOperator(id);
         return REDIRECT_ADMIN_ALL_ADMIN_OPERATORS;
     }
@@ -91,15 +97,16 @@ public class AdminController {
         List<OperatorDto> oper = operatorService.getAllAdminsOperators(id);
         model.addAttribute(OPER_DTO, oper);
         model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
-        return "/operator/admins-operators";
+        return OPERATOR_ADMINS_OPERATORS;
     }
 
-    @GetMapping(ALL_TARIFF_AD_LABEL)
-    public String getAllTariffs(@PathVariable(AD_LABEL) String adminLabel,
+    @GetMapping(ALL_TARIFF)
+    public String getAllTariffs(@RequestParam(ADMIN_ID) Integer adminId,
+                                @RequestParam(OPER_ID) Integer operId,
                                 Model model) {
-        List<ElectricityTariffDto> elTar = operatorService.getElTariffsCreateByAdmin(adminLabel);
-        List<GasTariffDto> gasTar = operatorService.getGasTariffsCreateByAdmin(adminLabel);
-        List<HeatTariffDto> heatTar = operatorService.getHeatTariffsCreateByAdmin(adminLabel);
+        List<ElectricityTariffDto> elTar = operatorService.getElTariffsWitchOperatorDontHave(adminId, operId);
+        List<GasTariffDto> gasTar = operatorService.getGasTariffsWitchOperatorDontHave(adminId, operId);
+        List<HeatTariffDto> heatTar = operatorService.getHeatTariffsWitchOperatorDontHave(adminId, operId);
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
         model.addAttribute(HEAT_TAR, heatTar);

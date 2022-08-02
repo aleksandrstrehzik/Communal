@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dao.UserRepository;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
-import org.example.service.UserService;
+import org.example.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 @Service

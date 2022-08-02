@@ -1,17 +1,16 @@
-package org.example.service;
+package org.example.service.interfaces;
 
 import org.example.dto.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface OperatorService {
     List<OperatorDto> getAllOperators();
 
     OperatorDto getOperatorById(Integer id);
 
-    void updateOperator(OperatorDto dto, Integer adminId);
+    void updateOperator(OperatorDto dto);
 
     void deleteOperator(Integer id);
 
@@ -52,4 +51,10 @@ public interface OperatorService {
     List<ConsumerDto> getConsumersWithOutTariff(String operLabel);
 
     List<ConsumerDto> getOperatorConsumersList(String operLabel);
+
+    List<ElectricityTariffDto> getElTariffsWitchOperatorDontHave(Integer adminId, Integer operId);
+
+    List<GasTariffDto> getGasTariffsWitchOperatorDontHave(Integer adminId, Integer operId);
+
+    List<HeatTariffDto> getHeatTariffsWitchOperatorDontHave(Integer adminId, Integer operId);
 }

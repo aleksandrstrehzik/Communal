@@ -9,6 +9,49 @@
 <body class="bg-light">
 <header th:insert="home-page :: header" style="position: relative; z-index: 9999;"></header>
 <div class="container mt-5">
+    <div th:if="${repList != null}">
+        <h3 class="text-center">Отчет</h3>
+        <table class="table table-bordered table-hover text-center">
+            <tr class="table-dark text-dark">
+                <th th:if="${id != null}">Id</th>
+                <th th:if="${elCost != null}">Ст. Эл</th>
+                <th th:if="${gasCost != null}">Ст. газ</th>
+                <th th:if="${heatCost != null}">Ст. тепл</th>
+                <th th:if="${elPay != null}">Пл. эл</th>
+                <th th:if="${gasPay != null}">Пл. газ</th>
+                <th th:if="${heatPay != null}">Пл. тепл</th>
+                <th th:if="${elValue != null}">Кол. эл</th>
+                <th th:if="${gasValue != null}">Кол. газ</th>
+                <th th:if="${heatValue != null}">Кол. тепл</th>
+                <th th:if="${elCount != null}">Счт. эл</th>
+                <th th:if="${gasCount != null}">Счт. газ</th>
+                <th th:if="${heatCount != null}">Счт. тепл</th>
+                <th th:if="${IsPaid != null}">Статус</th>
+                <th th:if="${operLabel != null}">Оператор</th>
+                <th th:if="${year != null}">Год</th>
+                <th th:if="${month != null}">Месяц</th>
+            </tr>
+            <tr th:each="rep : ${repList}">
+                <td th:if="${id != null}" th:text="${rep.id}"></td>
+                <td th:if="${elCost != null}" th:text="${rep.electricityTariff}"></td>
+                <td th:if="${gasCost != null}" th:text="${rep.gasTariff}"></td>
+                <td th:if="${heatCost != null}" th:text="${rep.heatTariff}"></td>
+                <td th:if="${elPay != null}" th:text="${rep.paymentElEnergy}"></td>
+                <td th:if="${gasPay != null}" th:text="${rep.paymentForGas}"></td>
+                <td th:if="${heatPay != null}" th:text="${rep.paymentHeatEnergy}"></td>
+                <td th:if="${elValue != null}" th:text="${rep.amountOfElectricityEnergyConsumed}"></td>
+                <td th:if="${gasValue != null}" th:text="${rep.volumeOfConsumedGas}"></td>
+                <td th:if="${heatValue != null}" th:text="${rep.amountOfHeatEnergyConsumed}"></td>
+                <td th:if="${elCount != null}" th:text="${rep.totalElConsumed}"></td>
+                <td th:if="${gasCount != null}" th:text="${rep.totalGasConsumed}"></td>
+                <td th:if="${heatCount != null}" th:text="${rep.totalHeatConsumed}"></td>
+                <td th:if="${IsPaid != null}" th:text="${rep.IsPaid}"></td>
+                <td th:if="${operLabel != null}" th:text="${rep.operator}"></td>
+                <td th:if="${year != null}" th:text="${rep.year}"></td>
+                <td th:if="${month != null}" th:text="${rep.month}"></td>
+            </tr>
+        </table>
+    </div>
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -75,10 +118,11 @@
                     </div>
                     <span class="text-muted" th:text="${cons.sw}"></span>
                 </li>
+                <br>
+                <a th:if="${flag == true}" th:href="@{/operator/editReport/{id}(id=${cons.id})}" class="btn btn-danger">Изменить последний платеж</a>
             </ul>
         </div>
         <div class="col-md-8 order-md-1">
-            <!-- <div class="col-md-4 order-md-2 mb-4">-->
             <h4 class="d-flex justify-content-between align-items-center mb-3">
                 <span class="text-muted">Какие поля хотите видеть</span>
                 <!--     <span class="badge badge-secondary badge-pill">3</span>-->
@@ -217,15 +261,13 @@
                 <hr class="my-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">За какой период</span>
-                    <!--     <span class="badge badge-secondary badge-pill">3</span>-->
                 </h4>
                 <div class="row">
                     <div class="col-md-8 mb-3">
                         <label>Месяц</label>
                         <select class="custom-select d-block w-100" name="mon">
                             <option value="">Не выбрано</option>
-                            <option th:each="m : ${months}" th:value="${m}" th:text="${m.rus}"
-                                    class="form-control"
+                            <option th:each="m : ${months}" th:value="${months.indexOf(m)}" th:text="${m}" class="form-control"
                                     style="width: 150px"></option>
                         </select>
                         <div class="invalid-feedback">
@@ -254,57 +296,6 @@
                 <button type="submit" class="btn btn-secondary">Показать</button>
             </form>
         </div>
-    </div>
-    <div th:if="${repList != null}">
-        <h3 class="text-center">Отчет</h3>
-        <table class="table table-bordered table-hover text-center">
-            <tr class="table-dark text-dark">
-                <th th:if="${id != null}">Id</th>
-                <th th:if="${elCost != null}">Ст. Эл</th>
-                <th th:if="${gasCost != null}">Ст. газ</th>
-                <th th:if="${heatCost != null}">Ст. тепл</th>
-                <th th:if="${elPay != null}">Пл. эл</th>
-                <th th:if="${gasPay != null}">Пл. газ</th>
-                <th th:if="${heatPay != null}">Пл. тепл</th>
-                <th th:if="${elValue != null}">Кол. эл</th>
-                <th th:if="${gasValue != null}">Кол. газ</th>
-                <th th:if="${heatValue != null}">Кол. тепл</th>
-                <th th:if="${elCount != null}">Счт. эл</th>
-                <th th:if="${gasCount != null}">Счт. газ</th>
-                <th th:if="${heatCount != null}">Счт. тепл</th>
-                <th th:if="${IsPaid != null}">Статус</th>
-                <th th:if="${operLabel != null}">Оператор</th>
-                <th th:if="${year != null}">Год</th>
-                <th th:if="${month != null}">Месяц</th>
-                <th th:if="${flag == true}">Изменить</th>
-            </tr>
-            <tr th:each="rep : ${repList}">
-                <td th:if="${id != null}" th:text="${rep.id}"></td>
-                <td th:if="${elCost != null}" th:text="${rep.electricityTariff}"></td>
-                <td th:if="${gasCost != null}" th:text="${rep.gasTariff}"></td>
-                <td th:if="${heatCost != null}" th:text="${rep.heatTariff}"></td>
-                <td th:if="${elPay != null}" th:text="${rep.paymentElEnergy}"></td>
-                <td th:if="${gasPay != null}" th:text="${rep.paymentForGas}"></td>
-                <td th:if="${heatPay != null}" th:text="${rep.paymentHeatEnergy}"></td>
-                <td th:if="${elValue != null}" th:text="${rep.amountOfElectricityEnergyConsumed}"></td>
-                <td th:if="${gasValue != null}" th:text="${rep.volumeOfConsumedGas}"></td>
-                <td th:if="${heatValue != null}" th:text="${rep.amountOfHeatEnergyConsumed}"></td>
-                <td th:if="${elCount != null}" th:text="${rep.totalElConsumed}"></td>
-                <td th:if="${gasCount != null}" th:text="${rep.totalGasConsumed}"></td>
-                <td th:if="${heatCount != null}" th:text="${rep.totalHeatConsumed}"></td>
-                <td th:if="${IsPaid != null}" th:text="${rep.IsPaid}"></td>
-                <td th:if="${operLabel != null}" th:text="${rep.operator}"></td>
-                <td th:if="${year != null}" th:text="${rep.year}"></td>
-                <td th:if="${month != null}" th:text="${rep.month}"></td>
-                <td th:if="${flag == true}"><a th:href="@{/operator/editReport/{id}(id=${rep.id})}">Изменить</a></td>
-            </tr>
-        </table>
-        <!--<div class="input-group-append">
-            <button type="submit" class="btn btn-secondary">
-                <a th:href="@{/operator/editTotalValue/{id}(id=${cons.id})}">Изменить</a>
-            </button>
-            <small class="text-muted ">за м3 горячей воды</small>
-        </div>-->
     </div>
 </div>
 </body>

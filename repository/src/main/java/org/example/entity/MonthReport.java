@@ -1,10 +1,10 @@
 package org.example.entity;
 
-import org.example.entity.enums.Months;
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Month;
 import java.util.Objects;
 
 @Entity
@@ -28,7 +28,7 @@ public class MonthReport {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "month")
-    private Months month;
+    private Month month;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "consumer_id")
