@@ -160,7 +160,7 @@
                         <label>Месяц</label>
                         <select class="custom-select d-block w-100" name="mon">
                             <option value="">Не выбрано</option>
-                            <option th:each="m : ${months}" th:value="${m}" th:text="${m.rus}" class="form-control"
+                            <option th:each="m : ${months}" th:value="${months.indexOf(m)}" th:text="${m}" class="form-control"
                                     style="width: 150px"></option>
                         </select>
                         <div class="invalid-feedback">
@@ -213,8 +213,6 @@
                     <th th:if="${operLabel != null}">Оператор</th>
                     <th th:if="${year != null}">Год</th>
                     <th th:if="${month != null}">Месяц</th>
-                    <!--<th>Изменить</th>
-                    <th>Удалить</th>-->
                 </tr>
                 <tr th:each="rep : ${repList}">
                     <td th:if="${id != null}" th:text="${rep.id}"></td>
@@ -235,8 +233,6 @@
                     <td th:if="${operLabel != null}" th:text="${rep.operator}"></td>
                     <td th:if="${year != null}" th:text="${rep.year}"></td>
                     <td th:if="${month != null}" th:text="${rep.month}"></td>
-                    <!-- <td><a th:href="@{/operator/edit-operator/{id}(id=${oper.id})}">Изменить</a></td>
-                     <td><a th:href="@{/operator/delete/{id}(id=${oper.id})}">Удалить</a></td>-->
                 </tr>
             </table>
         </div>

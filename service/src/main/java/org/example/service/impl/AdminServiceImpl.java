@@ -10,6 +10,7 @@ import org.example.entity.Role;
 import org.example.entity.User;
 import org.example.mapper.AdminMapper;
 import org.example.service.interfaces.AdminService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminMapper adminMapper;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     public AdminDto getAdmin(String label) {
         return adminMapper.toDto(adminRepository.findAdminByLabel(label));
@@ -41,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
         String adminLabel = adminDto.getLabel();
         User user = User.builder()
                 .userName(adminLabel)
-                .password(adminLabel)
+                .password(bCryptPasswordEncoder.encode(adminLabel))
                 .admin(save)
                 .build();
         Role role = roleRepository.findByName(ADMIN);

@@ -24,6 +24,9 @@ import static org.example.controllers.MockUtils.*;
 @RequiredArgsConstructor
 public class AdminController {
 
+    public static final String ALL_TARIFF = "/all-tariff";
+    public static final String OPERATOR_ADMINS_OPERATORS = "/operator/admins-operators";
+    public static final String MESSAGE4 = "Создайте тарифам по всем видам отпускаемой энергии";
     private final OperatorService operatorService;
     private final UserService userService;
     private final TariffsService tariffsService;
@@ -37,6 +40,11 @@ public class AdminController {
         List<ElectricityTariffDto> elTar = operatorService.getElTariffsCreateByAdmin(label);
         List<GasTariffDto> gasTar = operatorService.getGasTariffsCreateByAdmin(label);
         List<HeatTariffDto> heatTar = operatorService.getHeatTariffsCreateByAdmin(label);
+        if (elTar.isEmpty() || gasTar.isEmpty() || heatTar.isEmpty()) {
+            model.addAttribute(MESSAGE, MESSAGE4);
+            model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+            return OPERATOR_ERROR;
+        }
         model.addAttribute(ADMIN_LABEL, label);
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
@@ -72,14 +80,13 @@ public class AdminController {
             model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
             return OPERATOR_EDIT_OPERATOR;
         }
-        Integer id = userService.getUserByName(session.getAttribute(CURRENT_USER_NAME).toString()).getAdmin().getId();
-        operatorService.updateOperator(operator, id);
+        operatorService.updateOperator(operator);
         return REDIRECT_ADMIN_ALL_ADMIN_OPERATORS;
     }
 
 
     @GetMapping(DELETE_ID)
-    public String delete(@PathVariable(ID) Integer id) {
+    public String deleteOperator(@PathVariable(ID) Integer id) {
         operatorService.deleteOperator(id);
         return REDIRECT_ADMIN_ALL_ADMIN_OPERATORS;
     }
@@ -90,15 +97,16 @@ public class AdminController {
         List<OperatorDto> oper = operatorService.getAllAdminsOperators(id);
         model.addAttribute(OPER_DTO, oper);
         model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
-        return "/operator/admins-operators";
+        return OPERATOR_ADMINS_OPERATORS;
     }
 
-    @GetMapping(ALL_TARIFF_AD_LABEL)
-    public String getAllTariffs(@PathVariable(AD_LABEL) String adminLabel,
+    @GetMapping(ALL_TARIFF)
+    public String getAllTariffs(@RequestParam(ADMIN_ID) Integer adminId,
+                                @RequestParam(OPER_ID) Integer operId,
                                 Model model) {
-        List<ElectricityTariffDto> elTar = operatorService.getElTariffsCreateByAdmin(adminLabel);
-        List<GasTariffDto> gasTar = operatorService.getGasTariffsCreateByAdmin(adminLabel);
-        List<HeatTariffDto> heatTar = operatorService.getHeatTariffsCreateByAdmin(adminLabel);
+        List<ElectricityTariffDto> elTar = operatorService.getElTariffsWitchOperatorDontHave(adminId, operId);
+        List<GasTariffDto> gasTar = operatorService.getGasTariffsWitchOperatorDontHave(adminId, operId);
+        List<HeatTariffDto> heatTar = operatorService.getHeatTariffsWitchOperatorDontHave(adminId, operId);
         model.addAttribute(EL_TAR, elTar);
         model.addAttribute(GAS_TAR, gasTar);
         model.addAttribute(HEAT_TAR, heatTar);
@@ -116,10 +124,10 @@ public class AdminController {
 
     @GetMapping(DELETE_TARIFF)
     public String deleteTariffFromOperator(@RequestParam(ID) Integer id,
-                                           @RequestParam(VALUE) String value,
-                                           @RequestParam(OPER_LABEL) String operLabel) {
-        operatorService.deleteTariffFromOperator(id, value, operLabel);
-        return REDIRECT_FOR_ALL_INFO_OPERATOR_OPER_LABEL + operLabel;
+                                           @RequestParam(VALUE) String value) {
+        String name = (String) session.getAttribute(NAME);
+        operatorService.deleteTariffFromOperator(id, value, name);
+        return REDIRECT_FOR_ALL_INFO_OPERATOR_OPER_LABEL + name;
     }
 
     @GetMapping(DELETE_EL_TAR_ID)

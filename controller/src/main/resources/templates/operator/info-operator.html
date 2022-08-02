@@ -75,7 +75,7 @@
                         <td th:if="${flag == true}"><a th:href="@{'/admin/deleteTariff?id=' + ${heat.id} +'&value=heat'}">Удалить</a></td>
                     </tr>
                 </table>
-                <a th:if="${flag == true}" th:href="@{/admin/all-tariff/{adLabel}(adLabel=${operator.admin.label})}" class="btn btn-success" style="width: 160px; float: right">Добавить тарифы</a>
+                <a th:if="${flag == true}" th:href="@{'/admin/all-tariff/?adminId=' + ${operator.admin.id} + '&operId=' + ${operator.id}}" class="btn btn-success" style="width: 160px; float: right">Добавить тарифы</a>
             </div>
         </div>
     </div>

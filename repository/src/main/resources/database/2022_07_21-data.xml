@@ -20,16 +20,16 @@
     <changeSet id="32" author="Strezhik">
         <sql>
             INSERT INTO operator (id, label, admin_id)
-            VALUES ('1', 'ТЭЦ3', '1');
+            VALUES ('1', 'MTS', '1');
 
             INSERT INTO operator (id, label, admin_id)
-            VALUES ('2', 'ТЭЦ4', '1');
+            VALUES ('2', 'MinElGrid', '1');
 
             INSERT INTO operator (id, label, admin_id)
-            VALUES ('3', 'БТЭЦ', '2');
+            VALUES ('3', 'BTS', '2');
 
             INSERT INTO operator (id, label, admin_id)
-            VALUES ('4', 'Бресткие теплосети', '2');
+            VALUES ('4', 'BreElGrid', '2');
         </sql>
     </changeSet>
 
@@ -52,16 +52,16 @@
             VALUES ('2', 'BrestEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
 
             INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('3', 'ТЭЦ3', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+            VALUES ('3', 'MTS', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
 
             INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('4', 'ТЭЦ4', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+            VALUES ('4', 'MinElGrid', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
 
             INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('5', 'БТЭЦ', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+            VALUES ('5', 'BTS', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '3');
 
             INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('6', 'Бресткие теплосети', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+            VALUES ('6', 'BreElGrid', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '4');
 
             INSERT INTO user (id, user_name, password, consumer_id)
             VALUES ('7', 'Nikita', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
