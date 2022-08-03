@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+        <html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+        <head>
+        <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/css/addsToBootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<header th:insert="home-page :: header"></header>
+<div class="container mt-5">
+    <h3 class="text-center">Потребители без оператора</h3>
+    <table class="table table-bordered table-hover text-center">
+        <tr class="table-dark text-dark">
+            <th>Id</th>
+            <th>Оператор</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Площадь</th>
+            <th>Кол. Проживающих</th>
+            <th>Эл. тариф</th>
+            <th>Газ. тариф</th>
+            <th>Теп. тариф</th>
+            <th>Счет</th>
+            <th>Добавить себе</th>
+        </tr>
+        <tr th:each="con : ${consumerDto}">
+            <td th:text="${con.getId()}"></td>
+            <div th:if="${con.getOperator() != null}">
+                <td th:text="${con.getOperator().getLabel()}"></td>
+            </div>
+            <div th:if="${con.getOperator() == null}">
+                <td th:text="none"></td>
+            </div>
+            <td th:text="${con.getName()}"></td>
+            <td th:text="${con.getSurname()}"></td>
+            <td th:text="${con.getApartmentSquare()}"></td>
+            <td th:text="${con.getNumberOfResidents()}"></td>
+            <div th:if="${con.getElectricityTariff() != null}">
+                <td th:text="${con.getElectricityTariff().getTariff()}"></td>
+            </div>
+            <div th:if="${con.getElectricityTariff() == null}">
+                <td th:text="none"></td>
+            </div>
+            <div th:if="${con.getGasTariff() != null}">
+                <td th:text="${con.getGasTariff().getTariff()}"></td>
+            </div>
+            <div th:if="${con.getGasTariff() == null}">
+                <td th:text="none"></td>
+            </div>
+            <div th:if="${con.getHeatTariff() != null}">
+                <td th:text="${con.getHeatTariff().getTariff()}"></td>
+            </div>
+            <div th:if="${con.getHeatTariff() == null}">
+                <td th:text="none"></td>
+            </div>
+            <div th:if="${con.getSw() == null}">
+                <td th:text="none"></td>
+            </div>
+            <div th:if="${con.getSw() != null}">
+                <td th:text="${con.getSw()}"></td>
+            </div>
+            <td><a th:href="@{/operator/addConsumerToOperator/{id}(id=${con.id})}">Изменить</a></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

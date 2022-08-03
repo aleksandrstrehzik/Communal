@@ -17,73 +17,6 @@
         </sql>
     </changeSet>
 
-    <changeSet id="32" author="Strezhik">
-        <sql>
-            INSERT INTO operator (id, label, admin_id)
-            VALUES ('1', 'MTS', '1');
-
-            INSERT INTO operator (id, label, admin_id)
-            VALUES ('2', 'MinElGrid', '1');
-
-            INSERT INTO operator (id, label, admin_id)
-            VALUES ('3', 'BTS', '2');
-
-            INSERT INTO operator (id, label, admin_id)
-            VALUES ('4', 'BreElGrid', '2');
-        </sql>
-    </changeSet>
-
-    <changeSet id="37" author="Strezhik">
-        <sql>
-            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id)
-            VALUES ('1', '80', 'Nikita', '3', 'Sahankov', '1');
-
-            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id)
-            VALUES ('2', '60', 'Ivan', '2', 'Saganovich', '1');
-        </sql>
-    </changeSet>
-
-    <changeSet id="30" author="Strezhik">
-        <sql>
-            INSERT INTO user (id, user_name, password, admin_id)
-            VALUES ('1', 'MinskEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
-
-            INSERT INTO user (id, user_name, password, admin_id)
-            VALUES ('2', 'BrestEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
-
-            INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('3', 'MTS', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
-
-            INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('4', 'MinElGrid', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
-
-            INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('5', 'BTS', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '3');
-
-            INSERT INTO user (id, user_name, password, operator_id)
-            VALUES ('6', 'BreElGrid', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '4');
-
-            INSERT INTO user (id, user_name, password, consumer_id)
-            VALUES ('7', 'Nikita', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
-
-            INSERT INTO user (id, user_name, password, consumer_id)
-            VALUES ('8', 'Ivan', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
-        </sql>
-    </changeSet>
-
-    <changeSet id="33" author="Strezhik">
-        <sql>
-            INSERT INTO roles (id, name)
-            VALUES ('1', 'ADMIN');
-
-            INSERT INTO roles (id, name)
-            VALUES ('2', 'OPERATOR');
-
-            INSERT INTO roles (id, name)
-            VALUES ('3', 'CONSUMER');
-        </sql>
-    </changeSet>
-
     <changeSet id="34" author="Strezhik">
         <sql>
             INSERT INTO electricity_tariff (id, electricity_tariff, admin_id)
@@ -150,6 +83,110 @@
         </sql>
     </changeSet>
 
+
+    <changeSet id="32" author="Strezhik">
+        <sql>
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('1', 'MTS', '1');
+
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('2', 'MinElGrid', '1');
+
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('3', 'BTS', '2');
+
+            INSERT INTO operator (id, label, admin_id)
+            VALUES ('4', 'BreElGrid', '2');
+        </sql>
+    </changeSet>
+
+    <changeSet id="37" author="Strezhik">
+        <sql>
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('1', '80', 'Nikita', '3', 'Sahankov', '1', '1', '1', '1');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('2', '60', 'Ivan', '2', 'Saganovich', '1', '2', '2', '1');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('3', '30', 'Aleksandr', '5', 'Sidorko', '1', '2', '3', '3');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('4', '10', 'Ilia', '1', 'Gagiev', '1', '1', '2', '3');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('5', '74', 'Sergei', '7', 'Vandich', '1', '3', '2', '2');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('6', '89', 'Makar', '2', 'Nikanovich', '1', '1', '2', '3');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('7', '80', 'Petr', '3', 'Abramchik', '2', '4', '5', '6');
+
+            INSERT INTO consumer (id, apartment_square, name, number_of_residents, surname, operator_id, electricity_tariff_id, gas_tariff_id, heat_tariff_id)
+            VALUES ('8', '54', 'Andrei', '2', 'Diatel`', '2', '5', '4', '6');
+        </sql>
+    </changeSet>
+
+    <changeSet id="30" author="Strezhik">
+        <sql>
+            INSERT INTO user (id, user_name, password, admin_id)
+            VALUES ('1', 'MinskEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, admin_id)
+            VALUES ('2', 'BrestEnergo', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('3', 'MTS', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('4', 'MinElGrid', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('5', 'BTS', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '3');
+
+            INSERT INTO user (id, user_name, password, operator_id)
+            VALUES ('6', 'BreElGrid', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '4');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('7', 'Nikita', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '1');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('8', 'Ivan', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '2');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('9', 'Aleksandr', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '3');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('10', 'Ilia', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '4');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('11', 'Sergei', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '5');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('12', 'Makar', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '6');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('13', 'Petr', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '7');
+
+            INSERT INTO user (id, user_name, password, consumer_id)
+            VALUES ('14', 'Andrei', '$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6', '8');
+        </sql>
+    </changeSet>
+
+    <changeSet id="33" author="Strezhik">
+        <sql>
+            INSERT INTO roles (id, name)
+            VALUES ('1', 'ADMIN');
+
+            INSERT INTO roles (id, name)
+            VALUES ('2', 'OPERATOR');
+
+            INSERT INTO roles (id, name)
+            VALUES ('3', 'CONSUMER');
+        </sql>
+    </changeSet>
+
     <changeSet id="38" author="Strezhik">
         <sql>
             INSERT INTO user_role (user_id, role_id)
@@ -175,6 +212,24 @@
 
             INSERT INTO user_role (user_id, role_id)
             VALUES ('8', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('9', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('10', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('11', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('12', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('13', '3');
+
+            INSERT INTO user_role (user_id, role_id)
+            VALUES ('14', '3');
         </sql>
     </changeSet>
 
@@ -280,6 +335,16 @@
             INSERT INTO operators_heat_tariffs (operator_id, heat_tariff_id)
             VALUES ('4', '6');
 
+        </sql>
+    </changeSet>
+
+    <changeSet id="42" author="Strezhik">
+        <sql>
+            INSERT INTO month_report (id, paid, amount_of_electricity_energy_consumed, amount_of_heat_energy_consumed,
+                                      electricity_tariff, gas_tariff, heat_tariff, month, operator, pyament_for_electricity_energy,
+                                      pyament_for_gas, pyament_heat_energy, total_el_consumed, total_gas_consumed, total_heat_consumed,
+                                      total_payment, volume_of_consumed_gas, year, consumer_id)
+            VALUES ('1', true, '1', '1', '23.5', '2.5', '112.5', 'JANUARY', 'MTS', '23.5', '2.5', '112.5', '1', '1', '1', '138.5', '1', '2022', '1');
         </sql>
     </changeSet>
 </databaseChangeLog>

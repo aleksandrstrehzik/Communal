@@ -2,7 +2,6 @@ package org.example.dto;
 
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -13,8 +12,9 @@ import java.math.BigDecimal;
 @Builder
 public class ElectricityTariffDto {
 
+    public static final String NOT_NULL = "Введите новое значение";
     private Integer id;
-    @NotNull(message = "Введите новое значение")
+    @NotNull(message = NOT_NULL)
     private BigDecimal tariff;
     private AdminDto admin;
 

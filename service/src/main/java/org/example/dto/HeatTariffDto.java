@@ -12,8 +12,9 @@ import java.math.BigDecimal;
 @Builder
 public class HeatTariffDto {
 
+    public static final String NOT_NULL = "Введите новое значение";
     private Integer id;
-    @NotNull(message = "Введите новое значение")
+    @NotNull(message = NOT_NULL)
     private BigDecimal tariff;
     private AdminDto admin;
 }

@@ -1,7 +1,6 @@
 package org.example.dto;
 
 import lombok.*;
-import org.mapstruct.Mapper;
 
 @Getter
 @Setter

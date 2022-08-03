@@ -130,24 +130,6 @@ public class OperatorServiceImpl implements OperatorService {
                 .collect(Collectors.toList());
     }
 
-    public List<ElectricityTariffDto> getAllElTariffs() {
-        return elRepository.findAll().stream()
-                .map(electricityTariffMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<HeatTariffDto> getAllHeatTariffs() {
-        return heatRepository.findAll().stream()
-                .map(heatTariffMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<GasTariffDto> getAllGasTariffs() {
-        return gasRepository.findAll().stream()
-                .map(gasTariffMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
     @Transactional
     public void addTariffToOperator(String value, Integer id, String oper) {
         Operator opert = operatorRepository.findOperatorByLabel(oper);
@@ -190,12 +172,6 @@ public class OperatorServiceImpl implements OperatorService {
                 operatorRepository.save(opert);
                 break;
         }
-    }
-
-    public List<AdminDto> getAllAdmin() {
-        return adminRepository.findAll().stream()
-                .map(adminMapper::toDto)
-                .collect(Collectors.toList());
     }
 
     public List<ElectricityTariffDto> getElTariffsCreateByAdmin(String adminLabel) {
@@ -261,6 +237,19 @@ public class OperatorServiceImpl implements OperatorService {
         return heatRepository.getHeatTariffWhichOperatorDontHave(adminId, operId).stream()
                 .map(heatTariffMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<ConsumerDto> getConsumersWithOutOperator() {
+        return consumerRepository.findConsumersByOperatorIsNull().stream()
+                .map(consumerMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void addConsumerToOperator(String operLabel, Integer consumerId) {
+        Consumer consumer = consumerRepository.getReferenceById(consumerId);
+        consumer.setOperator(operatorRepository.findOperatorByLabel(operLabel));
+        consumerRepository.save(consumer);
     }
 }
 

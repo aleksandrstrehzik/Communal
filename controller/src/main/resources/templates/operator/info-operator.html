@@ -16,16 +16,24 @@
                 <div class="card-body d-flex flex-column align-items-start" style="width: 100%">
                     <h3 class="mb-0 text-dark" th:text="${operator.label}"></h3>
                     <p class="card-text mb-auto">Всякий текст</p>
-                    <hr class="my-4">
-                    <h5>Количество подключенных пользователей</h5>
-                    <h4 th:text="${consumer}"></h4>
-                    <div th:if="${conWithOut} != null">
-                        <h5>Количество подключенных без тарифа</h5>
-                        <h4 th:text="${conWithOut.size}"></h4>
-                        <a th:if="${flag2} != null" th:href="@{/operator/getConsWithOutTariffs}">Исправить</a>
-                    </div>
                 </div>
                 <img th:src="@{/images/minsk.png}" width="100px" height="100px">
+            </div>
+            <div class="card flex-md-row mb-4 box-shadow h-md-250" style="border-bottom: #1b1e21">
+                <div class="card-body d-flex flex-column align-items-start" style="width: 100%">
+                    <h5>Количество подключенных пользователей</h5>
+                    <h4 th:text="${consumer}"></h4>
+                    <div th:if="${flag2} != null">
+                        <h5>Количество подключенных без тарифа</h5>
+                        <h4 th:text="${conWithOut.size}"></h4>
+                        <a th:if="${flag2} != null" th:href="@{/operator/getConsWithOutTariffs}" class="btn btn-secondary">Исправить</a>
+                    </div>
+                    <div th:if="${flag2} != null">
+                        <h5>Количество пользователей без оператора</h5>
+                        <h4 th:text="${consumersWithOutOperator.size}"></h4>
+                        <a th:href="@{/operator/getConsumersWithOutOperator}" class="btn btn-secondary">Посмотреть</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-8">

@@ -1,7 +1,6 @@
 package org.example.service.interfaces;
 
 import org.example.dto.AdminDto;
-import org.example.entity.Admin;
 
 import java.util.List;
 

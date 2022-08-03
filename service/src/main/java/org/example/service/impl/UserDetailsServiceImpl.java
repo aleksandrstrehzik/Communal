@@ -2,7 +2,6 @@ package org.example.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dao.UserRepository;
-import org.example.dto.UserDto;
 import org.example.entity.User;
 import org.example.mapper.UserMapper;
 import org.springframework.security.core.userdetails.UserDetails;

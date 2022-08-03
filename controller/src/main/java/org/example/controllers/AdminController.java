@@ -24,9 +24,6 @@ import static org.example.controllers.MockUtils.*;
 @RequiredArgsConstructor
 public class AdminController {
 
-    public static final String ALL_TARIFF = "/all-tariff";
-    public static final String OPERATOR_ADMINS_OPERATORS = "/operator/admins-operators";
-    public static final String MESSAGE4 = "Создайте тарифам по всем видам отпускаемой энергии";
     private final OperatorService operatorService;
     private final UserService userService;
     private final TariffsService tariffsService;

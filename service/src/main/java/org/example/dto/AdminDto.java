@@ -2,8 +2,6 @@ package org.example.dto;
 
 
 import lombok.*;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

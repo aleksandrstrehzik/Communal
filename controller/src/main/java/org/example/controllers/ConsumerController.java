@@ -25,9 +25,6 @@ import static org.example.controllers.MockUtils.*;
 @RequiredArgsConstructor
 public class ConsumerController {
 
-    public static final String MESSAGE4 = "У вас есть неоплаченые платежи за следующие месяцы";
-    public static final String MONTHS_LIST = "monthsList";
-    public static final String NEW_REPORT = "newReport";
     private final ReportService reportService;
     private final UserService userService;
     private final HttpSession session;
@@ -50,12 +47,6 @@ public class ConsumerController {
         model.addAttribute(REP, reportService.getLastMonthReportOfConsumer(consumer.getId()));
         model.addAttribute(MONTHS, reportService.monthList());
         model.addAttribute(CONS, consumer);
-        int year1 = LocalDate.now().getYear();
-        System.out.println(year1);
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
         return REPORT_CREATE_REPORT;
     }
 
@@ -78,7 +69,7 @@ public class ConsumerController {
         List<Month> report = reportService.createReport(consumerId, reportDto.getTotalElConsumed(), reportDto.getTotalGasConsumed(),
                 reportDto.getTotalHeatConsumed(), month, LocalDate.now().getYear());
         if (report != null) {
-            model.addAttribute(MESSAGE, MESSAGE4);
+            model.addAttribute(MESSAGE, MESSAGE5);
             model.addAttribute(MONTHS_LIST, report);
             return REPORT_ERROR;
         }
