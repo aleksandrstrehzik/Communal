@@ -3,9 +3,9 @@ package org.example.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Month;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor

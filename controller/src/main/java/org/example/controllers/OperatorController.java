@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.Month;
 import java.util.List;
 
 import static org.example.controllers.MockUtils.*;
@@ -26,7 +25,6 @@ import static org.example.controllers.MockUtils.*;
 @RequiredArgsConstructor
 public class OperatorController {
 
-    public static final String GET_CONS_WITH_OUT_TARIFFS = "/getConsWithOutTariffs";
     private final OperatorService operatorService;
     private final ConsumerService consumerService;
     private final ReportService reportService;
@@ -249,5 +247,19 @@ public class OperatorController {
         model.addAttribute(CONSUMER_DTO, list);
         model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
         return CONSUMER_OPERATOR_CONSUMERS;
+    }
+
+    @GetMapping(GET_CONSUMERS_WITH_OUT_OPERATOR)
+    public String getConsumersWithOutOperator(Model model) {
+        model.addAttribute(CONSUMER_DTO, operatorService.getConsumersWithOutOperator());
+        model.addAttribute(ROLE, session.getAttribute(ROLE_VALUE));
+        return CONSUMER_WITH_OUT_OPERATOR;
+    }
+
+    @GetMapping(ADD_CONSUMER_TO_OPERATOR_ID)
+    public String addConsumerToOperator(@PathVariable(ID) Integer id,
+                                        Principal principal) {
+        operatorService.addConsumerToOperator(principal.getName(), id);
+        return REDIRECT_OPERATOR_GET_CONSUMERS_WITH_OUT_OPERATOR;
     }
 }

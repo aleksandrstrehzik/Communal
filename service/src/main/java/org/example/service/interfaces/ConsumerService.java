@@ -1,6 +1,6 @@
 package org.example.service.interfaces;
 
-import org.example.dto.*;
+import org.example.dto.ConsumerDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

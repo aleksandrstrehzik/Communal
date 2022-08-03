@@ -116,7 +116,7 @@ public class TariffServiceImpl implements TariffsService {
     @Transactional
     public void createTariff(Integer adminId, String value, BigDecimal tariff) {
         Admin admin = adminRepository.getReferenceById(adminId);
-        switch (value){
+        switch (value) {
             case EL:
                 ElectricityTariff el = ElectricityTariff.builder()
                         .admin(admin)

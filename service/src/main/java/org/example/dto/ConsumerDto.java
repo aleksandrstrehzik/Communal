@@ -30,7 +30,7 @@ public class ConsumerDto {
 
     @NotNull(message = "Введите площадь")
     @Max(value = 1000, message = "Плошадь не может быть меньше 2 или больше 1000 метров квадратных")
-    @Min(value = 9,  message = "Плошадь не может быть меньше 2 или больше 1000 метров квадратных")
+    @Min(value = 9, message = "Плошадь не может быть меньше 2 или больше 1000 метров квадратных")
     private Double apartmentSquare;
 
     @NotNull(message = "Введите количество жильцов")

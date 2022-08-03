@@ -3,6 +3,7 @@ package org.example.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.Month;
 
@@ -14,6 +15,10 @@ import java.time.Month;
 @ToString
 public class MonthReportDto {
 
+    public static final String POSITIVE = "Введите неотрицательное значение";
+    public static final String HEAT = "Введите количество потребленной теплоты";
+    public static final String ELECTRICITY = "Введите количество потребленного электричества";
+    public static final String GAS = "Введите количество потребленного газа";
     private Integer id;
     private Double electricityTariff;
     private Double gasTariff;
@@ -29,11 +34,14 @@ public class MonthReportDto {
     private BigDecimal paymentForGas;
     private BigDecimal paymentHeatEnergy;
     private BigDecimal paymentElEnergy;
-    @NotNull(message = "Введите количество потребленного электричества")
+    @NotNull(message = ELECTRICITY)
+    @Positive(message = POSITIVE)
     private BigDecimal totalElConsumed;
-    @NotNull(message = "Введите количество потребленного газа")
+    @Positive(message = POSITIVE)
+    @NotNull(message = GAS)
     private BigDecimal totalGasConsumed;
-    @NotNull(message = "Введите количество потребленной теплоты")
+    @Positive(message = POSITIVE)
+    @NotNull(message = HEAT)
     private BigDecimal totalHeatConsumed;
     private BigDecimal totalPayment;
 }

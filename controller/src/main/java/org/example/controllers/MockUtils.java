@@ -154,6 +154,19 @@ public class MockUtils {
     public static final String CONSUMER_OPERATOR_CONSUMERS = "/consumer/operator-consumers";
     public static final String OPERATOR_ = "/operator";
     public static final String FLAG_2 = "flag2";
+    public static final String CONSUMERS_WITH_OUT_OPERATOR = "consumersWithOutOperator";
+    public static final String ALL_TARIFF = "/all-tariff";
+    public static final String OPERATOR_ADMINS_OPERATORS = "/operator/admins-operators";
+    public static final String MESSAGE4 = "Создайте тарифам по всем видам отпускаемой энергии";
+    public static final String MESSAGE5 = "У вас есть неоплаченые платежи за следующие месяцы";
+    public static final String MONTHS_LIST = "monthsList";
+    public static final String NEW_REPORT = "newReport";
+    public static final String GET_CONS_WITH_OUT_TARIFFS = "/getConsWithOutTariffs";
+    public static final String CONSUMER_WITH_OUT_OPERATOR = "/consumer/withOut-operator";
+    public static final String REDIRECT_OPERATOR_GET_CONSUMERS_WITH_OUT_OPERATOR = "redirect:/operator/getConsumersWithOutOperator";
+    public static final String ADD_CONSUMER_TO_OPERATOR_ID = "/addConsumerToOperator/{id}";
+    public static final String GET_CONSUMERS_WITH_OUT_OPERATOR = "/getConsumersWithOutOperator";
+
 
     public static String getParam(HttpServletRequest req, String fieldName) {
         return Optional.ofNullable(req.getParameter(fieldName))

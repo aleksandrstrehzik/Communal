@@ -37,13 +37,15 @@ public class ForAllController {
         if (oper.getAdmin().equals(adminService.getAdmin(currentUserName))) {
             model.addAttribute(FLAG, true);
         }
-        if (oper.equals(operatorService.getOperatorByLabel(currentUserName))){
+        if (oper.equals(operatorService.getOperatorByLabel(currentUserName))) {
             model.addAttribute(FLAG_2, true);
         }
+        List<ConsumerDto> consumersWithOutOperator = operatorService.getConsumersWithOutOperator();
         List<ConsumerDto> conWithOut = operatorService.getConsumersWithOutTariff(operLabel);
         List<ElectricityTariffDto> elTar = operatorService.electricityTariffsOfOperator(operLabel);
         List<GasTariffDto> gasTar = operatorService.gasTariffsOfOperator(operLabel);
         List<HeatTariffDto> heatTar = operatorService.heatTariffsOfOperator(operLabel);
+        model.addAttribute(CONSUMERS_WITH_OUT_OPERATOR, consumersWithOutOperator);
         model.addAttribute(CONSUMER1, consumer);
         model.addAttribute(OPERATOR1, oper);
         model.addAttribute(EL_TAR, elTar);

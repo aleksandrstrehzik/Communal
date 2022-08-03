@@ -26,17 +26,9 @@ public interface OperatorService {
 
     List<GasTariffDto> gasTariffsOfOperator(String operatorLabel);
 
-    List<ElectricityTariffDto> getAllElTariffs();
-
-    List<GasTariffDto> getAllGasTariffs();
-
-    List<HeatTariffDto> getAllHeatTariffs();
-
     void addTariffToOperator(String value, Integer id, String oper);
 
     void deleteTariffFromOperator(Integer id, String value, String oper);
-
-    List<AdminDto> getAllAdmin();
 
     long getConsumersOfOperator(String operLabel);
 
@@ -57,4 +49,8 @@ public interface OperatorService {
     List<GasTariffDto> getGasTariffsWitchOperatorDontHave(Integer adminId, Integer operId);
 
     List<HeatTariffDto> getHeatTariffsWitchOperatorDontHave(Integer adminId, Integer operId);
+
+    List<ConsumerDto> getConsumersWithOutOperator();
+
+    void addConsumerToOperator(String operLabel, Integer consumerId);
 }

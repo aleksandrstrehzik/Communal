@@ -3,10 +3,6 @@ package org.example.service.interfaces;
 import org.example.dto.ElectricityTariffDto;
 import org.example.dto.GasTariffDto;
 import org.example.dto.HeatTariffDto;
-import org.example.entity.Admin;
-import org.example.entity.ElectricityTariff;
-import org.example.entity.GasTariff;
-import org.example.entity.HeatTariff;
 
 import java.math.BigDecimal;
 import java.util.List;
